@@ -1,0 +1,38 @@
+package de.fabianrump.crossnotes.ui
+
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import cafe.adriel.voyager.navigator.Navigator
+import de.fabianrump.crossnotes.di.domainRepositoryModule
+import de.fabianrump.crossnotes.di.uiModule
+import de.fabianrump.crossnotes.ui.feature.home.HomeScreen
+import de.fabianrump.crossnotes.ui.theme.AppDimensions
+import de.fabianrump.crossnotes.ui.theme.LocalAppDimensions
+import de.fabianrump.crossnotes.ui.theme.crossNotesTypography
+import de.fabianrump.crossnotes.ui.theme.darkScheme
+import de.fabianrump.crossnotes.ui.theme.lightScheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.KoinApplication
+
+@Composable
+@Preview
+internal fun App() {
+    KoinApplication(application = {
+        modules(
+            uiModule,
+            domainRepositoryModule
+        )
+    }) {
+        CompositionLocalProvider(LocalAppDimensions provides AppDimensions()) {
+            MaterialTheme(
+                colorScheme = if (isSystemInDarkTheme()) darkScheme else lightScheme,
+                typography = crossNotesTypography(),
+                content = {
+                    Navigator(screen = HomeScreen())
+                }
+            )
+        }
+    }
+}
