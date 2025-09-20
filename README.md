@@ -26,16 +26,16 @@ CrossNotes folgt einer **Clean Architecture** mit klar getrennten Layern:
 
 ```mermaid
 flowchart TD
-    UI[UI Layer<br>(Compose Multiplatform)] --> VM[Presentation Layer<br>(ViewModel / MVI)]
-    VM --> Domain[Domain Layer<br>(Use Cases)]
-    Domain --> Repo[Data Layer<br>(Repositories)]
-    Repo --> DB[(Persistence<br>Room / SQLDelight)]
-    Repo --> API[(Remote API<br>Ktor + Serialization)]
-    Repo --> Prefs[(Settings<br>Multiplatform Settings / KVault)]
-    DI[(Dependency Injection<br>Koin / Kotlin Inject)] -.-> VM
+    UI[UI Layer\n>(Compose Multiplatform)] --> VM[Presentation Layer\n>(ViewModel / MVI)]
+    VM --> Domain[Domain Layer\n>(Use Cases)]
+    Domain --> Repo[Data Layer\n>(Repositories)]
+    Repo --> DB[(Persistence\n>Room / SQLDelight)]
+    Repo --> API[(Remote API\n>Ktor + Serialization)]
+    Repo --> Prefs[(Settings\n>Multiplatform Settings / KVault)]
+    DI[(Dependency Injection\n>Koin / Kotlin Inject)] -.-> VM
     DI -.-> Domain
     DI -.-> Repo
-    Log[(Logging<br>Napier / Kermit)] -.-> VM
+    Log[(Logging\n>Napier / Kermit)] -.-> VM
     Log -.-> Domain
     Log -.-> Repo
 ```
