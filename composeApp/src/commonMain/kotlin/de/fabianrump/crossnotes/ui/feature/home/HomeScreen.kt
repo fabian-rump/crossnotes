@@ -1,4 +1,4 @@
-package de.fabianrump.crossnotes.ui.feature.home // Dein aktueller Pfad
+package de.fabianrump.crossnotes.ui.feature.home
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -11,20 +11,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import de.fabianrump.crossnotes.ui.feature.addnote.AddNoteScreen
+import de.fabianrump.crossnotes.ui.feature.settings.SettingsScreen
 
 internal class HomeScreen : Screen {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
-        val screenModel: HomeScreenModel = getScreenModel()
+        val navigator = LocalNavigator.currentOrThrow
+        val screenModel: HomeScreenModel = koinScreenModel()
         val uiState by screenModel.uiState.collectAsState()
 
         Scaffold(
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = { },
+                    onClick = {
+                        navigator.push(item = AddNoteScreen())
+                    },
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
                     contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 ) {
@@ -38,6 +45,9 @@ internal class HomeScreen : Screen {
             HomeScreenContent(
                 paddingValues = innerPadding,
                 uiState = uiState,
+                onSettingsClick = {
+                    navigator.push(item = SettingsScreen())
+                }
             )
         }
     }

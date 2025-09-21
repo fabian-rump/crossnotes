@@ -1,5 +1,6 @@
 package de.fabianrump.crossnotes.ui.feature.home
 
-internal data class HomeScreenUiState(
-    val dailyUsefulInfo: String? = null
+internal data class HomeScreenState(
+    val dailyUsefulInfo: String? = null,
+    val pastTodosExists: Boolean = false,
 )

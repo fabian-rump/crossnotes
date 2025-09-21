@@ -10,7 +10,7 @@ internal class HomeScreenModel(
     private val usefulInfoRepository: UsefulInfoRepository
 ) : ScreenModel {
 
-    private val _uiState = MutableStateFlow(HomeScreenUiState())
+    private val _uiState = MutableStateFlow(HomeScreenState())
     val uiState = _uiState.asStateFlow()
 
     init {

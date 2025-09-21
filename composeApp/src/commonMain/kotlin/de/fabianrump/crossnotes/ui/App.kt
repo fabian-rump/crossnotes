@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.SlideTransition
 import de.fabianrump.crossnotes.di.domainRepositoryModule
 import de.fabianrump.crossnotes.di.uiModule
 import de.fabianrump.crossnotes.ui.feature.home.HomeScreen
@@ -30,7 +31,14 @@ internal fun App() {
                 colorScheme = if (isSystemInDarkTheme()) darkScheme else lightScheme,
                 typography = crossNotesTypography(),
                 content = {
-                    Navigator(screen = HomeScreen())
+                    Navigator(
+                        screen = HomeScreen(),
+                        content = { navigator ->
+                            SlideTransition(navigator = navigator) { screen ->
+                                screen.Content()
+                            }
+                        }
+                    )
                 }
             )
         }
