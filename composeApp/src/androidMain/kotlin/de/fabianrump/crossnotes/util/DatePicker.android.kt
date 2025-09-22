@@ -1,15 +1,21 @@
 package de.fabianrump.crossnotes.util
 
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DisplayMode
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.Month
-import java.util.Calendar
-import android.app.DatePickerDialog as AndroidDatePickerDialog
-import android.widget.DatePicker as AndroidDatePickerView
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.toLocalDateTime
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 actual fun DatePickerDialog(
     show: Boolean,
@@ -17,32 +23,41 @@ actual fun DatePickerDialog(
     onDateSelected: (LocalDate) -> Unit,
     initialDate: LocalDate?
 ) {
-    val context = LocalContext.current
-
-    val calendar = remember { Calendar.getInstance() }
-    initialDate?.let {
-        calendar.set(it.year, it.monthNumber - 1, it.dayOfMonth)
+    val initialSelectedDateMillis = remember(initialDate) {
+        initialDate?.atStartOfDayIn(TimeZone.UTC)?.toEpochMilliseconds()
     }
-    val year = calendar.get(Calendar.YEAR)
-    val month = calendar.get(Calendar.MONTH)
-    val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = initialSelectedDateMillis,
+        initialDisplayMode = DisplayMode.Picker
+    )
 
     if (show) {
-        LaunchedEffect(Unit) {
-            val datePickerDialog = AndroidDatePickerDialog(
-                context,
-                { _: AndroidDatePickerView, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
-                    val monthEnum = Month(selectedMonth + 1)
-                    onDateSelected(LocalDate(selectedYear, monthEnum, selectedDayOfMonth))
-                },
-                year,
-                month,
-                day
-            )
-            datePickerDialog.setOnDismissListener {
-                onDismissRequest()
+        DatePickerDialog(
+            onDismissRequest = onDismissRequest,
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        datePickerState.selectedDateMillis?.let { millis ->
+                            val selectedInstant = Instant.fromEpochMilliseconds(millis)
+                            val selectedLocalDate = selectedInstant.toLocalDateTime(TimeZone.UTC).date
+                            onDateSelected(selectedLocalDate)
+                        }
+                        onDismissRequest()
+                    }
+                ) {
+                    Text("OK")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = onDismissRequest
+                ) {
+                    Text("Abbrechen")
+                }
             }
-            datePickerDialog.show()
+        ) {
+            DatePicker(state = datePickerState)
         }
     }
 }

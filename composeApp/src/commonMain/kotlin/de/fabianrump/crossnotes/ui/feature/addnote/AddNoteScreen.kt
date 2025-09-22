@@ -11,15 +11,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fabianrump.crossnotes.util.DatePickerDialog
-import kotlinx.datetime.LocalDate
 
 internal class AddNoteScreen : Screen {
 
@@ -29,9 +25,6 @@ internal class AddNoteScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel: AddNoteScreenModel = koinScreenModel()
         val state by screenModel.state.collectAsState()
-
-        var showDatePickerDialog by remember { mutableStateOf(false) }
-        var dateOfBirth by remember { mutableStateOf<LocalDate?>(null) }
 
         Scaffold(
             topBar = {
@@ -53,23 +46,24 @@ internal class AddNoteScreen : Screen {
                 state = state,
                 onTextChange = screenModel::onTextChange,
                 onDueDateClick = {
-                    showDatePickerDialog = true
+                    screenModel.updateDatePickerVisibility(isVisible = true)
                 },
                 onCreateTodoClick = {
-                    showDatePickerDialog = true
-                }
+
+                },
+                onPriorityChange = screenModel::updatePriority,
             )
         }
 
-        if (showDatePickerDialog) {
+        if (state.isDatePickerShown) {
             DatePickerDialog(
-                show = showDatePickerDialog,
-                onDismissRequest = { showDatePickerDialog = false },
+                show = state.isDatePickerShown,
+                onDismissRequest = { screenModel.updateDatePickerVisibility(isVisible = false) },
                 onDateSelected = { newDate ->
-                    dateOfBirth = newDate
-                    showDatePickerDialog = false
+                    screenModel.updateDueDate(date = newDate)
+                    screenModel.updateDatePickerVisibility(isVisible = false)
                 },
-                initialDate = dateOfBirth
+                initialDate = state.dueDate
             )
         }
     }

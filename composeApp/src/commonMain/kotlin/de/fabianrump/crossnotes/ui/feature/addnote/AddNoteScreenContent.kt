@@ -32,7 +32,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import de.fabianrump.crossnotes.data.model.Priority
+import de.fabianrump.crossnotes.data.model.Priority.HIGH
+import de.fabianrump.crossnotes.data.model.Priority.LOW
+import de.fabianrump.crossnotes.data.model.Priority.MEDIUM
 import de.fabianrump.crossnotes.ui.theme.dimens
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.number
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -42,6 +48,7 @@ internal fun AddNoteScreenContent(
     onTextChange: (String) -> Unit,
     onDueDateClick: () -> Unit,
     onCreateTodoClick: () -> Unit,
+    onPriorityChange: (Priority) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -56,9 +63,9 @@ internal fun AddNoteScreenContent(
             onTextChange = onTextChange
         )
         Text("Priority Level", style = MaterialTheme.typography.labelLarge)
-        PriorityRow()
+        PriorityRow(priority = state.priority, onPriorityChange = onPriorityChange)
         Text("Due Date", style = MaterialTheme.typography.labelLarge)
-        DueDate(onDueDateClick = onDueDateClick)
+        DueDate(onDueDateClick = onDueDateClick, dueDate = state.dueDate)
         Button(
             onClick = onCreateTodoClick,
             modifier = Modifier
@@ -85,7 +92,7 @@ internal fun AddNoteScreenContent(
 }
 
 @Composable
-private fun DueDate(onDueDateClick: () -> Unit) {
+private fun DueDate(onDueDateClick: () -> Unit, dueDate: LocalDate?) {
     Card(
         onClick = onDueDateClick,
         modifier = Modifier
@@ -100,7 +107,7 @@ private fun DueDate(onDueDateClick: () -> Unit) {
                 .padding(all = MaterialTheme.dimens.two),
             horizontalArrangement = Arrangement.SpaceBetween,
             content = {
-                Text(text = "DD.MM.YYYY")
+                Text(text = dueDate?.toFormattedString() ?: "DD.MM.YYYY")
                 Icon(
                     imageVector = Icons.Default.CalendarMonth,
                     contentDescription = "Calendar",
@@ -113,7 +120,10 @@ private fun DueDate(onDueDateClick: () -> Unit) {
 }
 
 @Composable
-private fun PriorityRow() {
+private fun PriorityRow(
+    priority: Priority,
+    onPriorityChange: (Priority) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,7 +135,11 @@ private fun PriorityRow() {
             icon = Icons.Filled.Flag,
             iconContentDescription = "Low",
             text = "Low",
-            iconColor = Color(0xFF059669)
+            iconColor = Color(0xFF059669),
+            isSelected = priority == LOW,
+            onClick = {
+                onPriorityChange(LOW)
+            }
         )
         Spacer(modifier = Modifier.width(8.dp))
         PriorityCard(
@@ -133,7 +147,11 @@ private fun PriorityRow() {
             icon = Icons.Filled.Flag,
             iconContentDescription = "Medium",
             text = "Medium",
-            iconColor = Color(0xFFD97706)
+            iconColor = Color(0xFFD97706),
+            isSelected = priority == MEDIUM,
+            onClick = {
+                onPriorityChange(MEDIUM)
+            }
         )
         Spacer(modifier = Modifier.width(8.dp))
         PriorityCard(
@@ -141,24 +159,31 @@ private fun PriorityRow() {
             icon = Icons.Filled.Flag,
             iconContentDescription = "High",
             text = "High",
-            iconColor = Color(0xFFDC2626)
+            iconColor = Color(0xFFDC2626),
+            isSelected = priority == HIGH,
+            onClick = {
+                onPriorityChange(HIGH)
+            }
         )
     }
 }
 
 @Composable
-fun PriorityCard(
+private fun PriorityCard(
     modifier: Modifier = Modifier,
     icon: ImageVector,
     iconContentDescription: String,
     iconColor: Color,
-    text: String
+    text: String,
+    isSelected: Boolean,
+    onClick: () -> Unit,
 ) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        colors = CardDefaults.cardColors(containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant),
+        onClick = onClick
     ) {
         Column(
             modifier = Modifier
@@ -178,7 +203,7 @@ fun PriorityCard(
                 text = text,
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = if(isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
@@ -215,11 +240,17 @@ private fun TodoText(state: AddNoteScreenState, onTextChange: (String) -> Unit) 
 private fun AddNoteScreenContentPreview() {
     AddNoteScreenContent(
         paddingValues = PaddingValues(),
-        state = AddNoteScreenState(
-            text = "My note"
-        ),
+        state = AddNoteScreenState(),
         onTextChange = {},
         onDueDateClick = {},
         onCreateTodoClick = {},
+        onPriorityChange = {},
     )
+}
+
+private fun LocalDate.toFormattedString(): String {
+    val day = this.day.toString().padStart(length = 2, padChar = '0')
+    val month = this.month.number.toString().padStart(length = 2, padChar = '0')
+    val year = this.year.toString()
+    return "$day.$month.$year"
 }
