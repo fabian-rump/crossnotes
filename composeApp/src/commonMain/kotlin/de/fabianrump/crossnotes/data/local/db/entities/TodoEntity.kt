@@ -6,9 +6,11 @@ import androidx.room.TypeConverters
 import de.fabianrump.crossnotes.data.local.converter.DateConverter
 import de.fabianrump.crossnotes.data.local.converter.PriorityConverter
 import de.fabianrump.crossnotes.data.model.Priority
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 @Entity(tableName = "todos")
 @TypeConverters(PriorityConverter::class, DateConverter::class)
@@ -18,6 +20,6 @@ internal data class ToDoEntity @OptIn(ExperimentalTime::class) constructor(
     val text: String,
     val priority: Priority,
     val isCompleted: Boolean = false,
-    val dueDate: Instant,
-    val createdAt: Instant = Clock.System.now()
+    val dueDate: LocalDate,
+    val createdAt: LocalDate = Clock.System.now().toLocalDateTime(timeZone = TimeZone.currentSystemDefault()).date
 )

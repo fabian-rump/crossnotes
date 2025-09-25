@@ -67,10 +67,11 @@ internal fun AddNoteScreenContent(
         Text("Due Date", style = MaterialTheme.typography.labelLarge)
         DueDate(onDueDateClick = onDueDateClick, dueDate = state.dueDate)
         Button(
-            onClick = onCreateTodoClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = MaterialTheme.dimens.two),
+            onClick = onCreateTodoClick,
+            enabled = state.text.isNotBlank() && state.dueDate != null,
             content = {
                 Row(
                     horizontalArrangement = Arrangement.Center,
@@ -203,12 +204,11 @@ private fun PriorityCard(
                 text = text,
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
-                color = if(isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
+                color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
 }
-
 
 @Composable
 private fun TodoText(state: AddNoteScreenState, onTextChange: (String) -> Unit) {

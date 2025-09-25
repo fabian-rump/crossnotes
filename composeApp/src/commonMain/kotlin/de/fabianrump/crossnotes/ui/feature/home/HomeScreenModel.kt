@@ -1,7 +1,7 @@
 package de.fabianrump.crossnotes.ui.feature.home
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import de.fabianrump.crossnotes.domain.repository.UsefulInfoRepository
+import de.fabianrump.crossnotes.domain.repositories.usefulinfo.UsefulInfoRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

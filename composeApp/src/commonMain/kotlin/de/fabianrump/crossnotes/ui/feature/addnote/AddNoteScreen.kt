@@ -48,9 +48,7 @@ internal class AddNoteScreen : Screen {
                 onDueDateClick = {
                     screenModel.updateDatePickerVisibility(isVisible = true)
                 },
-                onCreateTodoClick = {
-
-                },
+                onCreateTodoClick = screenModel::saveTodo,
                 onPriorityChange = screenModel::updatePriority,
             )
         }

@@ -2,8 +2,8 @@ package de.fabianrump.crossnotes.data.local.converter
 
 import androidx.room.TypeConverter
 import de.fabianrump.crossnotes.data.model.Priority
+import kotlinx.datetime.LocalDate
 import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 internal class PriorityConverter {
     @TypeConverter
@@ -13,20 +13,20 @@ internal class PriorityConverter {
 
     @TypeConverter
     fun toPriority(priorityString: String?): Priority? {
-        return priorityString?.let { Priority.valueOf(it) }
+        return priorityString?.let { Priority.valueOf(value = it) }
     }
 }
 
 class DateConverter {
     @OptIn(ExperimentalTime::class)
     @TypeConverter
-    fun fromTimestamp(value: Long?): Instant? {
-        return value?.let { Instant.fromEpochMilliseconds(it) }
+    fun fromTimestamp(value: Long?): LocalDate? {
+        return value?.let { LocalDate.fromEpochDays(epochDays = it) }
     }
 
     @OptIn(ExperimentalTime::class)
     @TypeConverter
-    fun dateToTimestamp(date: Instant?): Long? {
-        return date?.toEpochMilliseconds()
+    fun dateToTimestamp(date: LocalDate?): Long? {
+        return date?.toEpochDays()
     }
 }
