@@ -13,7 +13,8 @@ import androidx.compose.runtime.Composable
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SettingsScreen(
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    onNavigateToHistory: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -29,8 +30,11 @@ internal fun SettingsScreen(
                 }
             )
         },
-        content = {
-            Text(text = "Settings")
+        content = { paddingValues ->
+            SettingsScreenContent(
+                paddingValues = paddingValues,
+                onNavigateToHistory = onNavigateToHistory,
+            )
         }
     )
 }

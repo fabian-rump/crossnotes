@@ -49,7 +49,10 @@ fun CrossNotesNavigation() {
         }
         composable<Settings> {
             SettingsScreen(
-                onNavigateBack = navController::popBackStack
+                onNavigateBack = navController::popBackStack,
+                onNavigateToHistory = {
+                    navController.navigate(route = History)
+                }
             )
         }
     }
