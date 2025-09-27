@@ -15,6 +15,7 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fabianrump.crossnotes.ui.feature.addnote.AddNoteScreen
+import de.fabianrump.crossnotes.ui.feature.pasttodos.PastTodosScreen
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsScreen
 
 internal class HomeScreen : Screen {
@@ -47,6 +48,9 @@ internal class HomeScreen : Screen {
                 uiState = uiState,
                 onSettingsClick = {
                     navigator.push(item = SettingsScreen())
+                },
+                onPastTodoInfoCardClick = {
+                    navigator.push(item = PastTodosScreen())
                 }
             )
         }

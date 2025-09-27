@@ -15,7 +15,7 @@ import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 
 internal class AddNoteScreenModel(
-    private val addTodoUseCase: AddTodoUseCase
+    private val addTodoUseCase: AddTodoUseCase,
 ) : ScreenModel {
 
     private val _state = MutableStateFlow(AddNoteScreenState())

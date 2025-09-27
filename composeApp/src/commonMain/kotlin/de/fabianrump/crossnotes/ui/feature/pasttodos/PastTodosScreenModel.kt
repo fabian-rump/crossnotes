@@ -1,8 +1,7 @@
-package de.fabianrump.crossnotes.ui.feature.home
+package de.fabianrump.crossnotes.ui.feature.pasttodos
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import de.fabianrump.crossnotes.domain.usecase.info.UsefulInfoUseCase
 import de.fabianrump.crossnotes.domain.usecase.todo.GetAllTodosUseCase
 import de.fabianrump.crossnotes.ui.extensions.isInPast
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,26 +9,23 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-internal class HomeScreenModel(
-    private val usefulInfoUseCase: UsefulInfoUseCase,
+internal class PastTodosScreenModel(
     private val getAllTodosUseCase: GetAllTodosUseCase
 ) : ScreenModel {
 
-    private val _uiState = MutableStateFlow(HomeScreenState())
+    private val _uiState = MutableStateFlow(PastTodosScreenState())
     val uiState = _uiState.asStateFlow()
 
     init {
-        _uiState.update { it.copy(dailyUsefulInfo = usefulInfoUseCase()) }
-        loadAllTodos()
+        loadPastTodos()
     }
 
-    private fun loadAllTodos() {
+    private fun loadPastTodos() {
         screenModelScope.launch {
             getAllTodosUseCase().collect { todos ->
                 _uiState.update {
                     it.copy(
-                        pastTodosExists = todos.any { todo -> todo.isInPast() },
-                        todos = todos.filter { todo -> todo.isInPast().not() }
+                        todos = todos.filter { todo -> todo.isInPast() }
                     )
                 }
             }

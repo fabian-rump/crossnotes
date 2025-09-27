@@ -36,6 +36,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import de.fabianrump.crossnotes.data.model.Priority.HIGH
+import de.fabianrump.crossnotes.data.model.Priority.LOW
+import de.fabianrump.crossnotes.data.model.Priority.MEDIUM
+import de.fabianrump.crossnotes.domain.models.Todo
 import de.fabianrump.crossnotes.ui.theme.dimens
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -44,7 +48,12 @@ internal fun HomeScreenContent(
     paddingValues: PaddingValues,
     uiState: HomeScreenState,
     onSettingsClick: () -> Unit,
+    onPastTodoInfoCardClick: () -> Unit
 ) {
+    val highPriorityTodos = uiState.todos.filter { it.priority == HIGH }
+    val mediumPriorityTodos = uiState.todos.filter { it.priority == MEDIUM }
+    val lowPriorityTodos = uiState.todos.filter { it.priority == LOW }
+
     Column(
         modifier = Modifier
             .padding(paddingValues = paddingValues)
@@ -57,27 +66,33 @@ internal fun HomeScreenContent(
             usefulInfo = uiState.dailyUsefulInfo ?: "",
         )
         AnimatedVisibility(visible = uiState.pastTodosExists) {
-            PastTodoInfoCard()
+            PastTodoInfoCard(onPastTodoInfoCardClick = onPastTodoInfoCardClick)
         }
-        PriorityContainer(
-            headline = "High Priority",
-            items = listOf("Item 1", "Item 2", "Item 3")
-        )
-        PriorityContainer(
-            headline = "Medium Priority",
-            items = listOf("Item 1", "Item 2")
-        )
-        PriorityContainer(
-            headline = "Low Priority",
-            items = listOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
-        )
+        AnimatedVisibility(visible = highPriorityTodos.isNotEmpty()) {
+            PriorityContainer(
+                headline = "High Priority",
+                items = highPriorityTodos
+            )
+        }
+        AnimatedVisibility(visible = mediumPriorityTodos.isNotEmpty()) {
+            PriorityContainer(
+                headline = "Medium Priority",
+                items = mediumPriorityTodos
+            )
+        }
+        AnimatedVisibility(visible = lowPriorityTodos.isNotEmpty()) {
+            PriorityContainer(
+                headline = "Low Priority",
+                items = lowPriorityTodos
+            )
+        }
     }
 }
 
 @Composable
 private fun PriorityContainer(
     headline: String,
-    items: List<String>
+    items: List<Todo>
 ) {
     Card(
         modifier = Modifier
@@ -98,7 +113,7 @@ private fun PriorityContainer(
                     colors = ListItemDefaults.colors(
                         containerColor = Color.Transparent
                     ),
-                    headlineContent = { Text(it, style = MaterialTheme.typography.labelLarge) },
+                    headlineContent = { Text(text = it.text, style = MaterialTheme.typography.labelLarge) },
                     leadingContent = {
                         Checkbox(
                             checked = false,
@@ -112,8 +127,9 @@ private fun PriorityContainer(
 }
 
 @Composable
-private fun PastTodoInfoCard() {
+private fun PastTodoInfoCard(onPastTodoInfoCardClick: () -> Unit) {
     Card(
+        onClick = onPastTodoInfoCardClick,
         modifier = Modifier
             .fillMaxWidth()
             .padding(all = MaterialTheme.dimens.two),
@@ -221,6 +237,7 @@ private fun HomeScreenContentPreview() {
         uiState = HomeScreenState(
             dailyUsefulInfo = "Meine To-Do-Liste hat auch eine To-Do-Liste."
         ),
-        onSettingsClick = {}
+        onSettingsClick = {},
+        onPastTodoInfoCardClick = {}
     )
 }

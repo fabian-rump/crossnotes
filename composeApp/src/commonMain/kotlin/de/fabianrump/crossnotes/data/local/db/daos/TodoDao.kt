@@ -14,7 +14,7 @@ import kotlin.time.ExperimentalTime
 @Dao
 internal interface TodoDao {
     @Query("SELECT * FROM todos ORDER BY createdAt DESC")
-    fun getAllToDos(): Flow<List<ToDoEntity>>
+    fun getAll(): Flow<List<ToDoEntity>>
 
     @Query("SELECT * FROM todos WHERE id = :id")
     suspend fun getToDoById(id: Long): ToDoEntity?
