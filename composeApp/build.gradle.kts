@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidx.room)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -42,10 +43,6 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
             implementation(libs.koin.core)
-            implementation(libs.voyager.navigator)
-            implementation(libs.voyager.screen.model)
-            implementation(libs.voyager.transitions)
-            implementation(libs.voyager.koin)
             implementation(libs.compose.material.icons.core)
             implementation(libs.compose.material.icons.extended)
             implementation(libs.koin.compose)
@@ -54,6 +51,8 @@ kotlin {
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.navigation.compose)
+            implementation(libs.kotlinx.serialization.json)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

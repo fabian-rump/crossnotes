@@ -1,7 +1,7 @@
 package de.fabianrump.crossnotes.ui.feature.home
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import de.fabianrump.crossnotes.domain.usecase.info.UsefulInfoUseCase
 import de.fabianrump.crossnotes.domain.usecase.todo.GetAllTodosUseCase
 import de.fabianrump.crossnotes.ui.extensions.isInPast
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 internal class HomeScreenModel(
     private val usefulInfoUseCase: UsefulInfoUseCase,
     private val getAllTodosUseCase: GetAllTodosUseCase
-) : ScreenModel {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeScreenState())
     val uiState = _uiState.asStateFlow()
@@ -24,7 +24,7 @@ internal class HomeScreenModel(
     }
 
     private fun loadAllTodos() {
-        screenModelScope.launch {
+        viewModelScope.launch {
             getAllTodosUseCase().collect { todos ->
                 _uiState.update {
                     it.copy(

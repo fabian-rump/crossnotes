@@ -1,7 +1,7 @@
 package de.fabianrump.crossnotes.ui.feature.pasttodos
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import de.fabianrump.crossnotes.domain.usecase.todo.GetAllTodosUseCase
 import de.fabianrump.crossnotes.ui.extensions.isInPast
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 internal class PastTodosScreenModel(
     private val getAllTodosUseCase: GetAllTodosUseCase
-) : ScreenModel {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PastTodosScreenState())
     val uiState = _uiState.asStateFlow()
@@ -21,7 +21,7 @@ internal class PastTodosScreenModel(
     }
 
     private fun loadPastTodos() {
-        screenModelScope.launch {
+        viewModelScope.launch {
             getAllTodosUseCase().collect { todos ->
                 _uiState.update {
                     it.copy(

@@ -1,7 +1,7 @@
 package de.fabianrump.crossnotes.ui.feature.addnote
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import de.fabianrump.crossnotes.data.model.Priority
 import de.fabianrump.crossnotes.domain.models.Todo
 import de.fabianrump.crossnotes.domain.usecase.todo.AddTodoUseCase
@@ -16,7 +16,7 @@ import kotlin.time.Clock
 
 internal class AddNoteScreenModel(
     private val addTodoUseCase: AddTodoUseCase,
-) : ScreenModel {
+) : ViewModel() {
 
     private val _state = MutableStateFlow(AddNoteScreenState())
     val state = _state.asStateFlow()
@@ -45,6 +45,6 @@ internal class AddNoteScreenModel(
             priority = _state.value.priority,
             dueDate = nonNullDueDate
         )
-        screenModelScope.launch { addTodoUseCase(todo = todo) }
+        viewModelScope.launch { addTodoUseCase(todo = todo) }
     }
 }

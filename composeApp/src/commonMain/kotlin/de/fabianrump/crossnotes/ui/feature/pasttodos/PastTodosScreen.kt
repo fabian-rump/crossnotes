@@ -12,54 +12,47 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.koinScreenModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
-import de.fabianrump.crossnotes.ui.feature.history.HistoryScreen
+import org.koin.compose.viewmodel.koinViewModel
 
-internal class PastTodosScreen : Screen {
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun PastTodosScreen(
+    onNavigateBack: () -> Unit,
+    onNavigateToHistory: () -> Unit
+) {
+    val screenModel = koinViewModel<PastTodosScreenModel>()
+    val state by screenModel.uiState.collectAsState()
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
-        val screenModel: PastTodosScreenModel = koinScreenModel()
-        val state by screenModel.uiState.collectAsState()
-
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("Past Todos") },
-                    navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBackIosNew,
-                                contentDescription = "Back"
-                            )
-                        }
-                    },
-                    actions = {
-                        IconButton(
-                            onClick = {
-                                navigator.push(item = HistoryScreen())
-                            },
-                            content = {
-                                Icon(
-                                    imageVector = Icons.Default.History,
-                                    contentDescription = "History"
-                                )
-                            }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Past Todos") },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBackIosNew,
+                            contentDescription = "Back"
                         )
                     }
-                )
-            },
-            content = { paddingValues ->
-                PastTodosScreenContent(
-                    paddingValues = paddingValues,
-                    state = state,
-                )
-            }
-        )
-    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = onNavigateToHistory,
+                        content = {
+                            Icon(
+                                imageVector = Icons.Default.History,
+                                contentDescription = "History"
+                            )
+                        }
+                    )
+                }
+            )
+        },
+        content = { paddingValues ->
+            PastTodosScreenContent(
+                paddingValues = paddingValues,
+                state = state,
+            )
+        }
+    )
 }
