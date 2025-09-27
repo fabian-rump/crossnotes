@@ -38,12 +38,13 @@ internal class AddNoteScreenModel(
     }
 
     fun saveTodo() {
-        // TODO add dialog that due date is null
         val nonNullDueDate = _state.value.dueDate ?: Clock.System.now().toLocalDateTime(timeZone = TimeZone.currentSystemDefault()).date
         val todo = Todo(
+            id = 0L,
             text = _state.value.text,
             priority = _state.value.priority,
-            dueDate = nonNullDueDate
+            dueDate = nonNullDueDate,
+            isCompleted = false,
         )
         viewModelScope.launch { addTodoUseCase(todo = todo) }
     }

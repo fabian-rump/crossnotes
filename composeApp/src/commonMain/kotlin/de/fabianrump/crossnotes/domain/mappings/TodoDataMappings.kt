@@ -5,13 +5,17 @@ import de.fabianrump.crossnotes.domain.daos.TodoData
 import de.fabianrump.crossnotes.domain.models.Todo
 
 internal fun TodoData.toTodoEntity(): ToDoEntity = ToDoEntity(
+    id = id,
     text = text,
     priority = priority,
     dueDate = dueDate,
+    isCompleted = isCompleted
 )
 
 internal fun TodoData.toTodo(): Todo = Todo(
+    id = id,
     text = text,
     priority = priority,
-    dueDate = dueDate
+    dueDate = dueDate,
+    isCompleted = isCompleted,
 )

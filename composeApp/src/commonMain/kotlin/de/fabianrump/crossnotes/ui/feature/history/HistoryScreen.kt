@@ -9,12 +9,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HistoryScreen(
     onNavigateBack: () -> Unit
 ) {
+    val screenModel = koinViewModel<HistoryScreenModel>()
+    val state by screenModel.uiState.collectAsState()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -31,7 +37,8 @@ internal fun HistoryScreen(
         },
         content = { paddingValues ->
             HistoryScreenContent(
-                paddingValues = paddingValues
+                paddingValues = paddingValues,
+                state = state,
             )
         }
     )

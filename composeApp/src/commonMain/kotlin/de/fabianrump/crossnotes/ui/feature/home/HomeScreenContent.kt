@@ -48,7 +48,8 @@ internal fun HomeScreenContent(
     paddingValues: PaddingValues,
     uiState: HomeScreenState,
     onSettingsClick: () -> Unit,
-    onPastTodoInfoCardClick: () -> Unit
+    onPastTodoInfoCardClick: () -> Unit,
+    onCheckedTodo: (todoId: Long) -> Unit
 ) {
     val highPriorityTodos = uiState.todos.filter { it.priority == HIGH }
     val mediumPriorityTodos = uiState.todos.filter { it.priority == MEDIUM }
@@ -71,19 +72,22 @@ internal fun HomeScreenContent(
         AnimatedVisibility(visible = highPriorityTodos.isNotEmpty()) {
             PriorityContainer(
                 headline = "High Priority",
-                items = highPriorityTodos
+                items = highPriorityTodos,
+                onChecked = onCheckedTodo,
             )
         }
         AnimatedVisibility(visible = mediumPriorityTodos.isNotEmpty()) {
             PriorityContainer(
                 headline = "Medium Priority",
-                items = mediumPriorityTodos
+                items = mediumPriorityTodos,
+                onChecked = onCheckedTodo,
             )
         }
         AnimatedVisibility(visible = lowPriorityTodos.isNotEmpty()) {
             PriorityContainer(
                 headline = "Low Priority",
-                items = lowPriorityTodos
+                items = lowPriorityTodos,
+                onChecked = onCheckedTodo,
             )
         }
     }
@@ -92,7 +96,8 @@ internal fun HomeScreenContent(
 @Composable
 private fun PriorityContainer(
     headline: String,
-    items: List<Todo>
+    items: List<Todo>,
+    onChecked: (todoId: Long) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -117,7 +122,11 @@ private fun PriorityContainer(
                     leadingContent = {
                         Checkbox(
                             checked = false,
-                            onCheckedChange = {}
+                            onCheckedChange = { isChecked ->
+                                if (isChecked) {
+                                    onChecked(it.id)
+                                }
+                            },
                         )
                     }
                 )
@@ -238,6 +247,7 @@ private fun HomeScreenContentPreview() {
             dailyUsefulInfo = "Meine To-Do-Liste hat auch eine To-Do-Liste."
         ),
         onSettingsClick = {},
-        onPastTodoInfoCardClick = {}
+        onPastTodoInfoCardClick = {},
+        onCheckedTodo = {},
     )
 }

@@ -4,7 +4,9 @@ import de.fabianrump.crossnotes.domain.daos.TodoData
 import de.fabianrump.crossnotes.domain.models.Todo
 
 internal fun Todo.toTodoData(): TodoData = TodoData(
+    id = id,
     text = text,
     priority = priority,
-    dueDate = dueDate
+    dueDate = dueDate,
+    isCompleted = isCompleted,
 )

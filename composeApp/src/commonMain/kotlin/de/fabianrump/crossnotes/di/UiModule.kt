@@ -1,6 +1,7 @@
 package de.fabianrump.crossnotes.di
 
 import de.fabianrump.crossnotes.ui.feature.addnote.AddNoteScreenModel
+import de.fabianrump.crossnotes.ui.feature.history.HistoryScreenModel
 import de.fabianrump.crossnotes.ui.feature.home.HomeScreenModel
 import de.fabianrump.crossnotes.ui.feature.pasttodos.PastTodosScreenModel
 import org.koin.core.module.dsl.factoryOf
@@ -10,4 +11,5 @@ internal val uiModule = module {
     factoryOf(::HomeScreenModel)
     factoryOf(::AddNoteScreenModel)
     factoryOf(::PastTodosScreenModel)
+    factoryOf(::HistoryScreenModel)
 }
