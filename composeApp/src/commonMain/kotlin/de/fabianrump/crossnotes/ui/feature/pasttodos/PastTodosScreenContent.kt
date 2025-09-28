@@ -14,14 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import de.fabianrump.crossnotes.ui.extensions.toReadableText
-import kotlinx.datetime.LocalDate
 
 @Composable
 internal fun PastTodosScreenContent(
     paddingValues: PaddingValues,
-    state: PastTodosScreenState,
-    onCheckedTodo: (todoId: Long) -> Unit,
-    onEditTodo: (todoId: Long, dueDate: LocalDate) -> Unit
+    state: PastTodosState,
+    onIntent: (intent: PastTodosIntent) -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(paddingValues = paddingValues)
@@ -33,7 +31,7 @@ internal fun PastTodosScreenContent(
                         checked = it.isCompleted,
                         onCheckedChange = { isChecked ->
                             if (isChecked) {
-                                onCheckedTodo(it.id)
+                                onIntent(PastTodosIntent.CheckTodo(id = it.id))
                             }
                         },
                     )
@@ -43,7 +41,7 @@ internal fun PastTodosScreenContent(
                 trailingContent = {
                     IconButton(
                         onClick = {
-                            onEditTodo(it.id, it.dueDate)
+                            onIntent(PastTodosIntent.OpenDatePicker(id = it.id, date = it.dueDate))
                         },
                         content = {
                             Icon(

@@ -14,13 +14,19 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import de.fabianrump.crossnotes.ui.extensions.showErrorSnackbar
+import de.fabianrump.crossnotes.ui.feature.pasttodos.PastTodosIntent.DismissDatePicker
+import de.fabianrump.crossnotes.ui.feature.pasttodos.PastTodosIntent.LoadPastTodos
+import de.fabianrump.crossnotes.ui.feature.pasttodos.PastTodosIntent.UpdateDueDate
 import de.fabianrump.crossnotes.util.DatePickerDialog
 import kotlinx.coroutines.launch
-import org.koin.compose.viewmodel.koinViewModel
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,10 +34,26 @@ internal fun PastTodosScreen(
     onNavigateBack: () -> Unit,
     onNavigateToHistory: () -> Unit
 ) {
-    val screenModel = koinViewModel<PastTodosScreenModel>()
-    val state by screenModel.uiState.collectAsState()
-    val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val store: PastTodosStore = koinInject { parametersOf(scope) }
+    val state by store.state.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(key1 = Unit) {
+        store.onIntent(intent = LoadPastTodos)
+    }
+
+    LaunchedEffect(key1 = store) {
+        store.labels.collect { label ->
+            when (label) {
+                is PastTodosLabel.ShowErrorSnackbar -> scope.launch {
+                    snackbarHostState.showErrorSnackbar(message = label.message)
+                }
+
+                PastTodosLabel.NavigateToHistory -> onNavigateToHistory()
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -63,24 +85,7 @@ internal fun PastTodosScreen(
             PastTodosScreenContent(
                 paddingValues = paddingValues,
                 state = state,
-                onCheckedTodo = {
-                    screenModel.checkTodo(id = it)
-                    scope.launch {
-                        val result = snackbarHostState.showSnackbar(
-                            message = "Todo completed",
-                            actionLabel = "Revert",
-                            duration = SnackbarDuration.Long,
-                            withDismissAction = true
-                        )
-
-                        if (result == SnackbarResult.ActionPerformed) screenModel.uncheckTodo(id = it)
-                    }
-                },
-                onEditTodo = { id, dueDate ->
-                    screenModel.updateDatePickerVisibility(isVisible = true)
-                    screenModel.updateSelectedTodoId(id = id)
-                    screenModel.updateSelectedDueDate(date = dueDate)
-                }
+                onIntent = store::onIntent,
             )
         }
     )
@@ -88,10 +93,10 @@ internal fun PastTodosScreen(
     if (state.isDatePickerShown) {
         DatePickerDialog(
             show = state.isDatePickerShown,
-            onDismissRequest = { screenModel.updateDatePickerVisibility(isVisible = false) },
+            onDismissRequest = { store.onIntent(intent = DismissDatePicker) },
             onDateSelected = { newDate ->
-                screenModel.updateDatePickerVisibility(isVisible = false)
-                screenModel.updateDueDate(date = newDate)
+                store.onIntent(intent = DismissDatePicker)
+                store.onIntent(intent = UpdateDueDate(id = state.selectedTodoId, date = newDate))
                 scope.launch {
                     val result = snackbarHostState.showSnackbar(
                         message = "Due date changed",
@@ -100,7 +105,12 @@ internal fun PastTodosScreen(
                         withDismissAction = true
                     )
 
-                    if (result == SnackbarResult.ActionPerformed) screenModel.updateDueDate(date = state.selectedTodoDueDate)
+                    if (result == SnackbarResult.ActionPerformed) store.onIntent(
+                        intent = UpdateDueDate(
+                            id = state.selectedTodoId,
+                            date = state.selectedTodoDueDate
+                        )
+                    )
                 }
             },
         )
