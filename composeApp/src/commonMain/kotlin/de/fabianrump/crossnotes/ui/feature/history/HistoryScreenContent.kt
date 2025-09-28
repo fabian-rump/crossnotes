@@ -16,7 +16,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 internal fun HistoryScreenContent(
     paddingValues: PaddingValues,
-    state: HistoryScreenState
+    state: HistoryState
 ) {
     Column(
         modifier = Modifier.padding(paddingValues = paddingValues)
@@ -39,5 +39,5 @@ internal fun HistoryScreenContent(
 @Preview
 @Composable
 private fun HistoryScreenContentPreview() {
-    HistoryScreenContent(paddingValues = PaddingValues(), state = HistoryScreenState())
+    HistoryScreenContent(paddingValues = PaddingValues(), state = HistoryState())
 }

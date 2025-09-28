@@ -16,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import de.fabianrump.crossnotes.ui.extensions.showErrorSnackbar
 import de.fabianrump.crossnotes.ui.feature.home.HomeIntent.LoadInitialData
 import de.fabianrump.crossnotes.ui.feature.home.HomeIntent.UncheckTodo
 import kotlinx.coroutines.launch
@@ -44,11 +45,7 @@ internal fun HomeScreen(
                 HomeLabel.NavigateToPastTodos -> onPastTodoInfoCardClick()
                 HomeLabel.NavigateToSettings -> onSettingsClick()
                 is HomeLabel.ShowErrorSnackbar -> scope.launch {
-                    snackbarHostState.showSnackbar(
-                        message = label.message,
-                        duration = SnackbarDuration.Short,
-                        withDismissAction = true
-                    )
+                    snackbarHostState.showErrorSnackbar(message = label.message)
                 }
 
                 is HomeLabel.ShowUncheckTodoSnackbar -> scope.launch {
