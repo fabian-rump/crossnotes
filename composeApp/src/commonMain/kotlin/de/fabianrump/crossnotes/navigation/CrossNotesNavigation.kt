@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import de.fabianrump.crossnotes.ui.feature.addnote.AddNoteScreen
+import de.fabianrump.crossnotes.ui.feature.addtodo.AddNoteScreen
 import de.fabianrump.crossnotes.ui.feature.history.HistoryScreen
 import de.fabianrump.crossnotes.ui.feature.home.HomeScreen
 import de.fabianrump.crossnotes.ui.feature.pasttodos.PastTodosScreen

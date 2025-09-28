@@ -1,16 +1,13 @@
 package de.fabianrump.crossnotes.di
 
-import de.fabianrump.crossnotes.ui.feature.addnote.AddNoteScreenModel
+import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoStore
 import de.fabianrump.crossnotes.ui.feature.history.HistoryStore
 import de.fabianrump.crossnotes.ui.feature.home.HomeStore
 import de.fabianrump.crossnotes.ui.feature.pasttodos.PastTodosStore
 import kotlinx.coroutines.CoroutineScope
-import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 internal val uiModule = module {
-    factoryOf(::AddNoteScreenModel)
-
     factory { (scope: CoroutineScope) ->
         HomeStore(
             usefulInfoUseCase = get(),
@@ -34,6 +31,13 @@ internal val uiModule = module {
             checkTodoUseCase = get(),
             uncheckTodoUseCase = get(),
             updateDueDateUseCase = get(),
+            scope = scope,
+        )
+    }
+
+    factory { (scope: CoroutineScope) ->
+        AddTodoStore(
+            addTodoUseCase = get(),
             scope = scope,
         )
     }

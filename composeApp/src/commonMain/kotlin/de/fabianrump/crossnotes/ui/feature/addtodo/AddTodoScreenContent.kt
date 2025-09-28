@@ -1,4 +1,4 @@
-package de.fabianrump.crossnotes.ui.feature.addnote
+package de.fabianrump.crossnotes.ui.feature.addtodo
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,19 +36,21 @@ import de.fabianrump.crossnotes.data.model.Priority
 import de.fabianrump.crossnotes.data.model.Priority.HIGH
 import de.fabianrump.crossnotes.data.model.Priority.LOW
 import de.fabianrump.crossnotes.data.model.Priority.MEDIUM
+import de.fabianrump.crossnotes.ui.extensions.toFormattedString
+import de.fabianrump.crossnotes.ui.extensions.todayLocalDate
+import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoIntent.ChangePriority
+import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoIntent.ChangeText
+import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoIntent.OpenDatePicker
+import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoIntent.SaveTodo
 import de.fabianrump.crossnotes.ui.theme.dimens
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.number
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun AddNoteScreenContent(
     paddingValues: PaddingValues,
-    state: AddNoteScreenState,
-    onTextChange: (String) -> Unit,
-    onDueDateClick: () -> Unit,
-    onCreateTodoClick: () -> Unit,
-    onPriorityChange: (Priority) -> Unit,
+    state: AddTodoState,
+    onIntent: (AddTodoIntent) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -60,17 +62,25 @@ internal fun AddNoteScreenContent(
         Text("What needs to be done?", style = MaterialTheme.typography.labelLarge)
         TodoText(
             state = state,
-            onTextChange = onTextChange
+            onTextChange = { onIntent(ChangeText(text = it)) }
         )
         Text("Priority Level", style = MaterialTheme.typography.labelLarge)
-        PriorityRow(priority = state.priority, onPriorityChange = onPriorityChange)
+        PriorityRow(priority = state.priority, onPriorityChange = { onIntent(ChangePriority(priority = it)) })
         Text("Due Date", style = MaterialTheme.typography.labelLarge)
-        DueDate(onDueDateClick = onDueDateClick, dueDate = state.dueDate)
+        DueDate(onDueDateClick = { onIntent(OpenDatePicker) }, dueDate = state.dueDate)
         Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = MaterialTheme.dimens.two),
-            onClick = onCreateTodoClick,
+            onClick = {
+                onIntent(
+                    SaveTodo(
+                        text = state.text,
+                        priority = state.priority,
+                        dueDate = state.dueDate ?: todayLocalDate()
+                    )
+                )
+            },
             enabled = state.text.isNotBlank() && state.dueDate != null,
             content = {
                 Row(
@@ -211,7 +221,7 @@ private fun PriorityCard(
 }
 
 @Composable
-private fun TodoText(state: AddNoteScreenState, onTextChange: (String) -> Unit) {
+private fun TodoText(state: AddTodoState, onTextChange: (String) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -240,17 +250,7 @@ private fun TodoText(state: AddNoteScreenState, onTextChange: (String) -> Unit) 
 private fun AddNoteScreenContentPreview() {
     AddNoteScreenContent(
         paddingValues = PaddingValues(),
-        state = AddNoteScreenState(),
-        onTextChange = {},
-        onDueDateClick = {},
-        onCreateTodoClick = {},
-        onPriorityChange = {},
+        state = AddTodoState(),
+        onIntent = {},
     )
-}
-
-private fun LocalDate.toFormattedString(): String {
-    val day = this.day.toString().padStart(length = 2, padChar = '0')
-    val month = this.month.number.toString().padStart(length = 2, padChar = '0')
-    val year = this.year.toString()
-    return "$day.$month.$year"
 }
