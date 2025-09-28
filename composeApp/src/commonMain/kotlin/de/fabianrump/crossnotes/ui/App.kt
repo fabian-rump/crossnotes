@@ -21,15 +21,6 @@ internal fun App() {
             typography = crossNotesTypography(),
             content = {
                 CrossNotesNavigation()
-
-//                Navigator(
-//                    screen = HomeScreen(),
-//                    content = { navigator ->
-//                        SlideTransition(navigator = navigator) { screen ->
-//                            screen.Content()
-//                        }
-//                    }
-//                )
             }
         )
     }
