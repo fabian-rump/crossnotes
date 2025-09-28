@@ -29,7 +29,7 @@ flowchart TD
     UI["UI Layer (Compose Multiplatform)"] --> Presenter["Presentation Layer (MVI: Store, State, Intent, Reducer, Executor, Label)"]
     Presenter --> Domain["Domain Layer (Use Cases)"]
     Domain --> Repo["Data Layer (Repositories)"]
-    Repo --> DB[("Persistence\nRoom")]
+    Repo --> DB[("Persistence Room")]
     Repo --> API[("Remote API Ktor + Serialization")]
     Repo --> DS[("Settings DataStore")]
     DI[("Dependency Injection Koin")] -.-> Presenter
