@@ -26,16 +26,16 @@ CrossNotes folgt einer **Clean Architecture** mit klar getrennten Layern:
 
 ```mermaid
 flowchart TD
-    UI["UI Layer\n(Compose Multiplatform)"] --> Presenter["Presentation Layer\n(MVI: Store, State, Intent, Reducer, Executor, Label)"]
-    Presenter --> Domain["Domain Layer\n(Use Cases)"]
-    Domain --> Repo["Data Layer\n(Repositories)"]
+    UI["UI Layer (Compose Multiplatform)"] --> Presenter["Presentation Layer (MVI: Store, State, Intent, Reducer, Executor, Label)"]
+    Presenter --> Domain["Domain Layer (Use Cases)"]
+    Domain --> Repo["Data Layer (Repositories)"]
     Repo --> DB[("Persistence\nRoom")]
-    Repo --> API[("Remote API\nKtor + Serialization")]
-    Repo --> DS[("Settings\nDataStore")]
-    DI[("Dependency Injection\nKoin")] -.-> Presenter
+    Repo --> API[("Remote API Ktor + Serialization")]
+    Repo --> DS[("Settings DataStore")]
+    DI[("Dependency Injection Koin")] -.-> Presenter
     DI -.-> Domain
     DI -.-> Repo
-    Log[("Logging\nNapier")] -.-> Presenter
+    Log[("Logging Napier")] -.-> Presenter
     Log -.-> Domain
     Log -.-> Repo
 ```
