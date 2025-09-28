@@ -1,4 +1,4 @@
-package de.fabianrump.crossnotes.ui.feature.home
+package de.fabianrump.crossnotes.ui.feature.home.mvvm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

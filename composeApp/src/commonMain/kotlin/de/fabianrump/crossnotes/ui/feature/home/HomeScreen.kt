@@ -11,23 +11,59 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import de.fabianrump.crossnotes.ui.feature.home.HomeIntent.LoadInitialData
+import de.fabianrump.crossnotes.ui.feature.home.HomeIntent.UncheckTodo
 import kotlinx.coroutines.launch
-import org.koin.compose.viewmodel.koinViewModel
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 
 @Composable
-internal fun HomeScreen(
+internal fun MVIHomeScreen(
     onSettingsClick: () -> Unit,
     onFabClick: () -> Unit,
     onPastTodoInfoCardClick: () -> Unit
 ) {
-    val screenModel = koinViewModel<HomeScreenModel>()
-    val uiState by screenModel.uiState.collectAsState()
-    val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val store: HomeStore = koinInject { parametersOf(scope) }
+    val state by store.state.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(key1 = Unit) {
+        store.onIntent(intent = LoadInitialData)
+    }
+
+    LaunchedEffect(key1 = store) {
+        store.labels.collect { label ->
+            when (label) {
+                HomeLabel.NavigateToAddTodo -> onFabClick()
+                HomeLabel.NavigateToPastTodos -> onPastTodoInfoCardClick()
+                HomeLabel.NavigateToSettings -> onSettingsClick()
+                is HomeLabel.ShowErrorSnackbar -> scope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = label.message,
+                        duration = SnackbarDuration.Short,
+                        withDismissAction = true
+                    )
+                }
+
+                is HomeLabel.ShowUncheckTodoSnackbar -> scope.launch {
+                    val result = snackbarHostState.showSnackbar(
+                        message = "Todo completed",
+                        actionLabel = "Revert",
+                        duration = SnackbarDuration.Long,
+                        withDismissAction = true
+                    )
+
+                    if (result == SnackbarResult.ActionPerformed) store.onIntent(intent = UncheckTodo(id = label.id))
+                }
+            }
+        }
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -38,30 +74,16 @@ internal fun HomeScreen(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
-                    contentDescription = "Neue Notiz erstellen"
+                    contentDescription = "Add Note"
                 )
             }
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         content = { innerPadding ->
-            HomeScreenContent(
+            MVIHomeScreenContent(
                 paddingValues = innerPadding,
-                uiState = uiState,
-                onSettingsClick = onSettingsClick,
-                onPastTodoInfoCardClick = onPastTodoInfoCardClick,
-                onCheckedTodo = {
-                    screenModel.checkTodo(id = it)
-                    scope.launch {
-                        val result = snackbarHostState.showSnackbar(
-                            message = "Todo completed",
-                            actionLabel = "Revert",
-                            duration = SnackbarDuration.Long,
-                            withDismissAction = true
-                        )
-
-                        if (result == SnackbarResult.ActionPerformed) screenModel.uncheckTodo(id = it)
-                    }
-                }
+                state = state,
+                onIntent = store::onIntent,
             )
         }
     )

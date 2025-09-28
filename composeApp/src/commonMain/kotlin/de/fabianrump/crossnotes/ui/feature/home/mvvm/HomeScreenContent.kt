@@ -1,4 +1,4 @@
-package de.fabianrump.crossnotes.ui.feature.home
+package de.fabianrump.crossnotes.ui.feature.home.mvvm
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -40,20 +40,20 @@ import de.fabianrump.crossnotes.data.model.Priority.HIGH
 import de.fabianrump.crossnotes.data.model.Priority.LOW
 import de.fabianrump.crossnotes.data.model.Priority.MEDIUM
 import de.fabianrump.crossnotes.domain.models.Todo
-import de.fabianrump.crossnotes.ui.feature.home.mvvm.HomeScreenContent
-import de.fabianrump.crossnotes.ui.feature.home.mvvm.HomeScreenState
 import de.fabianrump.crossnotes.ui.theme.dimens
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun MVIHomeScreenContent(
+internal fun HomeScreenContent(
     paddingValues: PaddingValues,
-    state: HomeState,
-    onIntent: (HomeIntent) -> Unit,
+    uiState: HomeScreenState,
+    onSettingsClick: () -> Unit,
+    onPastTodoInfoCardClick: () -> Unit,
+    onCheckedTodo: (todoId: Long) -> Unit
 ) {
-    val highPriorityTodos = state.todos.filter { it.priority == HIGH }
-    val mediumPriorityTodos = state.todos.filter { it.priority == MEDIUM }
-    val lowPriorityTodos = state.todos.filter { it.priority == LOW }
+    val highPriorityTodos = uiState.todos.filter { it.priority == HIGH }
+    val mediumPriorityTodos = uiState.todos.filter { it.priority == MEDIUM }
+    val lowPriorityTodos = uiState.todos.filter { it.priority == LOW }
 
     Column(
         modifier = Modifier
@@ -62,32 +62,32 @@ internal fun MVIHomeScreenContent(
             .fillMaxSize()
             .verticalScroll(state = rememberScrollState()),
     ) {
-        Header(onSettingsClick = { onIntent(HomeIntent.NavigateToSettings) })
+        Header(onSettingsClick = onSettingsClick)
         InfoCard(
-            usefulInfo = state.dailyUsefulInfo ?: "",
+            usefulInfo = uiState.dailyUsefulInfo ?: "",
         )
-        AnimatedVisibility(visible = state.pastTodosExists) {
-            PastTodoInfoCard(onPastTodoInfoCardClick = { onIntent(HomeIntent.NavigateToPastTodos) })
+        AnimatedVisibility(visible = uiState.pastTodosExists) {
+            PastTodoInfoCard(onPastTodoInfoCardClick = onPastTodoInfoCardClick)
         }
         AnimatedVisibility(visible = highPriorityTodos.isNotEmpty()) {
             PriorityContainer(
                 headline = "High Priority",
                 items = highPriorityTodos,
-                onChecked = { onIntent(HomeIntent.CheckTodo(id = it)) },
+                onChecked = onCheckedTodo,
             )
         }
         AnimatedVisibility(visible = mediumPriorityTodos.isNotEmpty()) {
             PriorityContainer(
                 headline = "Medium Priority",
                 items = mediumPriorityTodos,
-                onChecked = { onIntent(HomeIntent.CheckTodo(id = it)) },
+                onChecked = onCheckedTodo,
             )
         }
         AnimatedVisibility(visible = lowPriorityTodos.isNotEmpty()) {
             PriorityContainer(
                 headline = "Low Priority",
                 items = lowPriorityTodos,
-                onChecked = { onIntent(HomeIntent.CheckTodo(id = it)) },
+                onChecked = onCheckedTodo,
             )
         }
     }
