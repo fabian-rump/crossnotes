@@ -8,11 +8,11 @@ CrossNotes ist eine plattformübergreifende **Notiz- und ToDo-App**, die auf **A
 
 ## 🚀 Features  
 
-- ✍️ **Notizen & ToDos erstellen, bearbeiten, löschen**  
-- 💾 **Persistenz** mit **Room (KMP)** oder **SQLDelight**  
+- ✍️ **ToDos erstellen, abhaken und Einsehen der Historie**  
+- 💾 **Persistenz** mit **Room (KMP)** und **SQLDelight**  
 - 🔄 **Offline-First** Architektur mit Sync zur API (Ktor Client)  
-- ⚙️ **Settings** (Dark Mode, Sprache, User Preferences) via **Multiplatform Settings / KVault**  
-- 🧭 **Navigation** mit **Voyager** oder **Decompose**  
+- ⚙️ **Settings** (Dark Mode, Todo Historie, User Preferences) via **DataStore**  
+- 🧭 **Navigation** mit **Compose Navigation**  
 - 🏗️ **MVI / StateFlow Architektur** für reaktiven UI-State  
 - 🔌 **Dependency Injection** mit **Koin**  
 - 📊 **Tests** mit **Kotest & Turbine**  
@@ -26,36 +26,35 @@ CrossNotes folgt einer **Clean Architecture** mit klar getrennten Layern:
 
 ```mermaid
 flowchart TD
-    UI["UI Layer\n(Compose Multiplatform)"] --> VM["Presentation Layer\n(ViewModel / MVI)"]
-    VM --> Domain["Domain Layer\n(Use Cases)"]
+    UI["UI Layer\n(Compose Multiplatform)"] --> Presenter["Presentation Layer\n(MVI: Store, State, Intent, Reducer, Executor, Label)"]
+    Presenter --> Domain["Domain Layer\n(Use Cases)"]
     Domain --> Repo["Data Layer\n(Repositories)"]
-    Repo --> DB[("Persistence\nRoom / SQLDelight")]
+    Repo --> DB[("Persistence\nRoom")]
     Repo --> API[("Remote API\nKtor + Serialization")]
-    Repo --> Prefs[("Settings\nMultiplatform Settings / KVault")]
-    DI[("Dependency Injection\nKoin / Kotlin Inject")] -.-> VM
+    Repo --> DS[("Settings\nDataStore")]
+    DI[("Dependency Injection\nKoin")] -.-> Presenter
     DI -.-> Domain
     DI -.-> Repo
-    Log[("Logging\nNapier / Kermit")] -.-> VM
+    Log[("Logging\nNapier")] -.-> Presenter
     Log -.-> Domain
     Log -.-> Repo
-
 ```
 
 ---
 
-## 🛠️ Tech Stack  
+## 🛠️ Tech Stack
 
-| Bereich | Libraries / Tools |
-|---------|-------------------|
-| **UI** | Compose Multiplatform |
-| **Navigation** | Voyager / Decompose |
-| **Persistenz** | Room (KMP) / SQLDelight |
-| **Netzwerk** | Ktor Client + kotlinx.serialization |
-| **Settings** | Multiplatform Settings / KVault |
-| **State Mgmt** | MVI mit StateFlow / Orbit MVI |
-| **DI** | Koin |
-| **Logging** | Napier / Kermit |
-| **Testing** | Kotest, Turbine (für Flows) |
+| Bereich         | Libraries / Tools                      |
+|-----------------|----------------------------------------|
+| **UI**          | Compose Multiplatform                  |
+| **Navigation**  | Compose Navigation (Jetpack)           |
+| **Persistenz**  | Room (KMP-kompatibel)                  |
+| **Netzwerk**    | Ktor Client + kotlinx.serialization     |
+| **Settings**    | Jetpack DataStore (Multiplatform)      |
+| **State Mgmt**  | MVI mit StateFlow / Coroutines         |
+| **DI**          | Koin                                   |
+| **Logging**     | Napier                                 |
+| **Testing**     | Kotest, Turbine (für Flows), MockK    |
 
 ---
 
