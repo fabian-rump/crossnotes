@@ -23,7 +23,7 @@ import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 
 @Composable
-internal fun MVIHomeScreen(
+internal fun HomeScreen(
     onSettingsClick: () -> Unit,
     onFabClick: () -> Unit,
     onPastTodoInfoCardClick: () -> Unit
@@ -80,7 +80,7 @@ internal fun MVIHomeScreen(
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         content = { innerPadding ->
-            MVIHomeScreenContent(
+            HomeScreenContent(
                 paddingValues = innerPadding,
                 state = state,
                 onIntent = store::onIntent,

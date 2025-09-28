@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import de.fabianrump.crossnotes.ui.feature.addnote.AddNoteScreen
 import de.fabianrump.crossnotes.ui.feature.history.HistoryScreen
-import de.fabianrump.crossnotes.ui.feature.home.MVIHomeScreen
+import de.fabianrump.crossnotes.ui.feature.home.HomeScreen
 import de.fabianrump.crossnotes.ui.feature.pasttodos.PastTodosScreen
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsScreen
 import kotlinx.serialization.Serializable
@@ -17,7 +17,7 @@ fun CrossNotesNavigation() {
 
     NavHost(navController = navController, startDestination = Home) {
         composable<Home> {
-            MVIHomeScreen(
+            HomeScreen(
                 onSettingsClick = {
                     navController.navigate(route = Settings)
                 },

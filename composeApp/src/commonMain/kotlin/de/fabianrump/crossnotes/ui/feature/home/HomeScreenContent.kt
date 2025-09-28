@@ -40,13 +40,11 @@ import de.fabianrump.crossnotes.data.model.Priority.HIGH
 import de.fabianrump.crossnotes.data.model.Priority.LOW
 import de.fabianrump.crossnotes.data.model.Priority.MEDIUM
 import de.fabianrump.crossnotes.domain.models.Todo
-import de.fabianrump.crossnotes.ui.feature.home.mvvm.HomeScreenContent
-import de.fabianrump.crossnotes.ui.feature.home.mvvm.HomeScreenState
 import de.fabianrump.crossnotes.ui.theme.dimens
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun MVIHomeScreenContent(
+internal fun HomeScreenContent(
     paddingValues: PaddingValues,
     state: HomeState,
     onIntent: (HomeIntent) -> Unit,
@@ -243,11 +241,7 @@ private fun Header(
 private fun HomeScreenContentPreview() {
     HomeScreenContent(
         paddingValues = PaddingValues(),
-        uiState = HomeScreenState(
-            dailyUsefulInfo = "Meine To-Do-Liste hat auch eine To-Do-Liste."
-        ),
-        onSettingsClick = {},
-        onPastTodoInfoCardClick = {},
-        onCheckedTodo = {},
+        state = HomeState(),
+        onIntent = { },
     )
 }
