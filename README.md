@@ -63,7 +63,6 @@ flowchart TD
 <img src="screenshots/add_todo.png" alt="Home" width="250"/>
 <img src="screenshots/past_todos.png" alt="Home" width="250"/>
 <img src="screenshots/date_picker.png" alt="Home" width="250"/>
----
 
 ## 🔧 Setup & Installation  
 
@@ -84,6 +83,8 @@ cd crossnotes
 # Desktop App starten
 ./gradlew :desktopApp:run
 ```
+
+---
 
 ## 📂 Projektstruktur  
 
