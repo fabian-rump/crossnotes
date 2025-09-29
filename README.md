@@ -85,8 +85,6 @@ cd crossnotes
 ./gradlew :desktopApp:run
 ```
 
----
-
 ## 📂 Projektstruktur  
 
 ```plaintext
