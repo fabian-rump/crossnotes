@@ -66,7 +66,8 @@ flowchart TD
     ![Add Todo Screen](screenshots/add_todo.png)
     ![Past Todos Screen](screenshots/past_todos.png)
     ![Date Picker](screenshots/date_picker.png)
-
+markdown
+<img src="screenshots/home.png" alt="Home" width="250"/>
 ---
 
 ## 🔧 Setup & Installation  
