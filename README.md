@@ -58,16 +58,11 @@ flowchart TD
 
 ---
 
-## 📱 Screenshots (Demo)  
-
-    Hier sind ein paar Einblicke in CrossNotes:
-
-    ![Home Screen](screenshots/home.png)
-    ![Add Todo Screen](screenshots/add_todo.png)
-    ![Past Todos Screen](screenshots/past_todos.png)
-    ![Date Picker](screenshots/date_picker.png)
-markdown
+## 📱 Screenshots (Demo)
 <img src="screenshots/home.png" alt="Home" width="250"/>
+<img src="screenshots/add_todo.png" alt="Home" width="250"/>
+<img src="screenshots/past_todos.png" alt="Home" width="250"/>
+<img src="screenshots/date_picker.png" alt="Home" width="250"/>
 ---
 
 ## 🔧 Setup & Installation  
