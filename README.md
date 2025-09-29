@@ -2,7 +2,7 @@
 
 > Eine **Kotlin Multiplatform (KMP)** & **Compose Multiplatform (CMP)** Showcase-App zum Demonstrieren moderner Architektur, Bibliotheken und Best Practices.  
 
-CrossNotes ist eine plattformübergreifende **Notiz- und ToDo-App**, die auf **Android, iOS und Desktop** läuft – mit gemeinsamem Code für Logik, Datenhaltung und Architektur.  
+CrossNotes ist eine plattformübergreifende **Notiz- und ToDo-App**, die auf **Android und iOS** läuft – mit gemeinsamem Code für Logik, Datenhaltung und Architektur.  
 
 ---
 
@@ -44,17 +44,17 @@ flowchart TD
 
 ## 🛠️ Tech Stack
 
-| Bereich         | Libraries / Tools                      |
-|-----------------|----------------------------------------|
-| **UI**          | Compose Multiplatform                  |
-| **Navigation**  | Compose Navigation (Jetpack)           |
-| **Persistenz**  | Room (KMP-kompatibel)                  |
-| **Netzwerk**    | Ktor Client + kotlinx.serialization     |
-| **Settings**    | Jetpack DataStore (Multiplatform)      |
-| **State Mgmt**  | MVI mit StateFlow / Coroutines         |
-| **DI**          | Koin                                   |
-| **Logging**     | Napier                                 |
-| **Testing**     | Kotest, Turbine (für Flows), MockK    |
+| Bereich         | Libraries / Tools                    |
+|-----------------|--------------------------------------|
+| **UI**          | Compose Multiplatform                |
+| **Navigation**  | Compose Navigation (Jetpack)         |
+| **Persistenz**  | Room (KMP-kompatibel)                |
+| **Netzwerk**    | Ktor Client + kotlinx.serialization   |
+| **Settings**    | Jetpack DataStore (Multiplatform)    |
+| **State Mgmt**  | MVI mit StateFlow / Coroutines       |
+| **DI**          | Koin                                 |
+| **Logging**     | Napier                               |
+| **Testing**     | Kotest, Turbine (für Flows)    |
 
 ---
 
@@ -90,14 +90,13 @@ cd crossnotes
 
 ```plaintext
 crossnotes/
- ├── androidApp/      # Android spezifisch
- ├── iosApp/          # iOS spezifisch
- ├── desktopApp/      # Desktop spezifisch
- └── shared/          # Shared KMP Code
-      ├── ui/         # Compose UI
-      ├── presentation/ # ViewModels / State
-      ├── domain/     # Use Cases
-      └── data/       # Repositories, API, DB
+ ├── androidApp/        # Android spezifisch
+ ├── iosApp/            # iOS spezifisch
+ └── shared/            # Shared KMP Code
+      ├── ui/           # Compose UI
+      ├── presentation/ # Store, State, Intent, Reducer, Executor, Label
+      ├── domain/       # Use Cases
+      └── data/         # Repositories, API, DB
 ```
 
 ---
