@@ -5,6 +5,7 @@ import de.fabianrump.crossnotes.data.local.db.entities.ToDoEntity
 import de.fabianrump.crossnotes.data.mappings.toTodoData
 import de.fabianrump.crossnotes.domain.daos.TodoData
 import de.fabianrump.crossnotes.domain.mappings.toTodoEntity
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.LocalDate
@@ -18,18 +19,21 @@ internal class TodoRepositoryImpl(
     override suspend fun getAll(): Flow<List<TodoData>> = todoDao.getAll().map { it.map(transform = ToDoEntity::toTodoData) }
 
     override suspend fun checkTodo(id: Long) {
+        Napier.d { "checkTodo with id: $id" }
         todoDao.getToDoById(id = id)
             ?.copy(isCompleted = true)
             ?.let { todoDao.updateToDo(todo = it) }
     }
 
     override suspend fun uncheckTodo(id: Long) {
+        Napier.d { "uncheckTodo with id: $id" }
         todoDao.getToDoById(id = id)
             ?.copy(isCompleted = false)
             ?.let { todoDao.updateToDo(todo = it) }
     }
 
     override suspend fun updateDueDate(id: Long, dueDate: LocalDate) {
+        Napier.d { "updateDueDate with id: $id" }
         todoDao.getToDoById(id = id)
             ?.copy(dueDate = dueDate)
             ?.let { todoDao.updateToDo(todo = it) }

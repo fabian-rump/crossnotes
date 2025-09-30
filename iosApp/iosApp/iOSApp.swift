@@ -4,6 +4,7 @@ import ComposeApp
 @main
 struct iOSApp: App {
     init() {
+        LoggingSetup_iosKt.setupLogging()
         KoinModulesKt.doInitKoinIos()
     }
 

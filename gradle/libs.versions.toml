@@ -10,6 +10,7 @@ kotlin = "2.2.20"
 
 kotlinxDatetime = "0.7.1"
 kotlinxSerializationJson = "1.9.0"
+napier = "2.7.1"
 navigationCompose = "2.9.0"
 koinCore = "4.1.1"
 composeIcons = "1.7.3"
@@ -25,6 +26,7 @@ androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecyc
 androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
 compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "composeIcons" }

@@ -17,4 +17,5 @@ internal fun initKoin(appDeclaration: KoinAppDeclaration = {}) {
     }
 }
 
+// is used actually
 fun initKoinIos() = initKoin(appDeclaration = {})
