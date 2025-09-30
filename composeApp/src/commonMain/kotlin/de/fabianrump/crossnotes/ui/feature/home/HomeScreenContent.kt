@@ -35,7 +35,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import de.fabianrump.crossnotes.data.model.Priority.HIGH
 import de.fabianrump.crossnotes.data.model.Priority.LOW
 import de.fabianrump.crossnotes.data.model.Priority.MEDIUM
@@ -152,7 +151,7 @@ private fun PastTodoInfoCard(onPastTodoInfoCardClick: () -> Unit) {
                 Icon(
                     imageVector = Icons.Default.WarningAmber,
                     contentDescription = "iconContentDescription",
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(MaterialTheme.dimens.three),
                     tint = MaterialTheme.colorScheme.secondaryContainer
                 )
                 Spacer(modifier = Modifier.width(MaterialTheme.dimens.paddingMedium))
@@ -186,7 +185,7 @@ private fun InfoCard(
             Icon(
                 imageVector = Icons.Default.Lightbulb,
                 contentDescription = "iconContentDescription",
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(MaterialTheme.dimens.three),
                 tint = MaterialTheme.colorScheme.tertiaryContainer
             )
             Spacer(modifier = Modifier.width(MaterialTheme.dimens.paddingMedium))

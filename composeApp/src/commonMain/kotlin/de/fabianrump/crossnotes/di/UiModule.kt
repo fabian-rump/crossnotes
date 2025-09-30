@@ -4,6 +4,7 @@ import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoStore
 import de.fabianrump.crossnotes.ui.feature.history.HistoryStore
 import de.fabianrump.crossnotes.ui.feature.home.HomeStore
 import de.fabianrump.crossnotes.ui.feature.pasttodos.PastTodosStore
+import de.fabianrump.crossnotes.ui.feature.settings.SettingsStore
 import kotlinx.coroutines.CoroutineScope
 import org.koin.dsl.module
 
@@ -38,6 +39,14 @@ internal val uiModule = module {
     factory { (scope: CoroutineScope) ->
         AddTodoStore(
             addTodoUseCase = get(),
+            scope = scope,
+        )
+    }
+
+    factory { (scope: CoroutineScope) ->
+        SettingsStore(
+            getThemeUseCase = get(),
+            toggleThemeUseCase = get(),
             scope = scope,
         )
     }

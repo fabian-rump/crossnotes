@@ -31,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import de.fabianrump.crossnotes.data.model.Priority
 import de.fabianrump.crossnotes.data.model.Priority.HIGH
 import de.fabianrump.crossnotes.data.model.Priority.LOW
@@ -122,7 +121,7 @@ private fun DueDate(onDueDateClick: () -> Unit, dueDate: LocalDate?) {
                 Icon(
                     imageVector = Icons.Default.CalendarMonth,
                     contentDescription = "Calendar",
-                    modifier = Modifier.size(size = 36.dp),
+                    modifier = Modifier.size(size = MaterialTheme.dimens.four),
                     tint = MaterialTheme.colorScheme.primary,
                 )
             }
@@ -138,7 +137,7 @@ private fun PriorityRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = MaterialTheme.dimens.two, vertical = MaterialTheme.dimens.one),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         PriorityCard(
@@ -152,7 +151,7 @@ private fun PriorityRow(
                 onPriorityChange(LOW)
             }
         )
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(MaterialTheme.dimens.one))
         PriorityCard(
             modifier = Modifier.weight(1f),
             icon = Icons.Filled.Flag,
@@ -164,7 +163,7 @@ private fun PriorityRow(
                 onPriorityChange(MEDIUM)
             }
         )
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(MaterialTheme.dimens.one))
         PriorityCard(
             modifier = Modifier.weight(1f),
             icon = Icons.Filled.Flag,
@@ -191,24 +190,24 @@ private fun PriorityCard(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(MaterialTheme.dimens.oneAndHalf),
+        elevation = CardDefaults.cardElevation(defaultElevation = MaterialTheme.dimens.paddingSmall),
         colors = CardDefaults.cardColors(containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant),
         onClick = onClick
     ) {
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 20.dp),
+                .padding(horizontal = MaterialTheme.dimens.two, vertical = MaterialTheme.dimens.twoAndHalf),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = iconContentDescription,
-                modifier = Modifier.size(36.dp),
+                modifier = Modifier.size(size = MaterialTheme.dimens.four),
                 tint = iconColor,
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.one))
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = text,
@@ -235,7 +234,7 @@ private fun TodoText(state: AddTodoState, onTextChange: (String) -> Unit) {
             label = { Text(text = "Enter your todo...") },
             minLines = 3,
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(MaterialTheme.dimens.oneAndHalf),
             colors = OutlinedTextFieldDefaults.colors().copy(
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,

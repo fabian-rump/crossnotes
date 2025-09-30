@@ -9,6 +9,8 @@ import de.fabianrump.crossnotes.ui.feature.history.HistoryScreen
 import de.fabianrump.crossnotes.ui.feature.home.HomeScreen
 import de.fabianrump.crossnotes.ui.feature.pasttodos.PastTodosScreen
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsScreen
+import de.fabianrump.crossnotes.ui.feature.settings.subscreens.AboutCrossNotesScreen
+import de.fabianrump.crossnotes.ui.feature.settings.subscreens.PrivacySecurityScreen
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -52,7 +54,23 @@ fun CrossNotesNavigation() {
                 onNavigateBack = navController::popBackStack,
                 onNavigateToHistory = {
                     navController.navigate(route = History)
+                },
+                onNavigateToAboutCrossNotes = {
+                    navController.navigate(route = AboutCrossNotes)
+                },
+                onNavigateToPrivacySecurity = {
+                    navController.navigate(route = PrivacySecurity)
                 }
+            )
+        }
+        composable<AboutCrossNotes> {
+            AboutCrossNotesScreen(
+                onNavigateBack = navController::popBackStack,
+            )
+        }
+        composable<PrivacySecurity> {
+            PrivacySecurityScreen(
+                onNavigateBack = navController::popBackStack,
             )
         }
     }
@@ -72,3 +90,9 @@ private data object PastTodos
 
 @Serializable
 private data object Settings
+
+@Serializable
+private data object AboutCrossNotes
+
+@Serializable
+private data object PrivacySecurity

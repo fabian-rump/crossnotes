@@ -1,6 +1,8 @@
 package de.fabianrump.crossnotes.di
 
 import de.fabianrump.crossnotes.domain.usecase.info.UsefulInfoUseCase
+import de.fabianrump.crossnotes.domain.usecase.theme.GetThemeUseCase
+import de.fabianrump.crossnotes.domain.usecase.theme.ToggleThemeUseCase
 import de.fabianrump.crossnotes.domain.usecase.todo.AddTodoUseCase
 import de.fabianrump.crossnotes.domain.usecase.todo.CheckTodoUseCase
 import de.fabianrump.crossnotes.domain.usecase.todo.GetAllTodosUseCase
@@ -18,4 +20,6 @@ internal val domainUseCaseModule = module {
     singleOf(::CheckTodoUseCase)
     singleOf(::UncheckTodoUseCase)
     singleOf(::UpdateDueDateUseCase)
+    singleOf(::ToggleThemeUseCase)
+    singleOf(::GetThemeUseCase)
 }
