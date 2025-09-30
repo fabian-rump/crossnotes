@@ -51,7 +51,7 @@ import de.fabianrump.crossnotes.ui.theme.dimens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun PrivacySecurityScreen(
-    onNavigateBack: () -> Unit = {}
+    onNavigateBack: () -> Unit
 ) {
     var biometricEnabled by remember { mutableStateOf(value = false) }
     var autoLockEnabled by remember { mutableStateOf(value = true) }

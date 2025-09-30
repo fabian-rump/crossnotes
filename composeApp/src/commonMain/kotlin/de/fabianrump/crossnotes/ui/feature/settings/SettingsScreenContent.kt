@@ -32,11 +32,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import de.fabianrump.crossnotes.data.model.ThemeMode
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsIntent.NavigateToAboutCrossNotes
+import de.fabianrump.crossnotes.ui.feature.settings.SettingsIntent.NavigateToLanguageRegion
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsIntent.NavigateToPrivacySecurity
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsIntent.ToggleNotification
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsIntent.ToggleTheme
 import de.fabianrump.crossnotes.ui.theme.dimens
-import io.github.aakira.napier.Napier
 
 @Composable
 internal fun SettingsScreenContent(
@@ -62,7 +62,8 @@ internal fun SettingsScreenContent(
         )
         OtherSettingsSection(
             onAboutCrossNotesClick = { onIntent(NavigateToAboutCrossNotes) },
-            onPrivacySecurityClick = { onIntent(NavigateToPrivacySecurity) }
+            onPrivacySecurityClick = { onIntent(NavigateToPrivacySecurity) },
+            onLanguageRegionClick = { onIntent(NavigateToLanguageRegion) },
         )
     }
 }
@@ -243,7 +244,8 @@ fun NotificationsSection(
 @Composable
 fun OtherSettingsSection(
     onAboutCrossNotesClick: () -> Unit,
-    onPrivacySecurityClick: () -> Unit
+    onPrivacySecurityClick: () -> Unit,
+    onLanguageRegionClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -267,9 +269,7 @@ fun OtherSettingsSection(
                 subtitle = "Deutsch (Deutschland)",
                 iconColor = MaterialTheme.colorScheme.errorContainer,
                 iconTint = MaterialTheme.colorScheme.onErrorContainer,
-                onClick = {
-                    Napier.d { "Sprache & Region Click" }
-                }
+                onClick = onLanguageRegionClick
             )
 
             HorizontalDivider()

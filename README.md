@@ -63,6 +63,10 @@ flowchart TD
 <img src="screenshots/add_todo.png" alt="Home" width="250"/>
 <img src="screenshots/past_todos.png" alt="Home" width="250"/>
 <img src="screenshots/date_picker.png" alt="Home" width="250"/>
+<img src="screenshots/about.png" alt="Home" width="250"/>
+<img src="screenshots/language_region.png" alt="Home" width="250"/>
+<img src="screenshots/safety_security.png" alt="Home" width="250"/>
+<img src="screenshots/settings.png" alt="Home" width="250"/>
 
 ## 🔧 Setup & Installation  
 

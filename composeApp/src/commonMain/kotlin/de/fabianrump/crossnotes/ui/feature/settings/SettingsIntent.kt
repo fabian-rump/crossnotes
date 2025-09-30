@@ -9,4 +9,5 @@ internal sealed interface SettingsIntent {
     data object NavigateToHistory : SettingsIntent
     data object NavigateToAboutCrossNotes : SettingsIntent
     data object NavigateToPrivacySecurity : SettingsIntent
+    data object NavigateToLanguageRegion : SettingsIntent
 }

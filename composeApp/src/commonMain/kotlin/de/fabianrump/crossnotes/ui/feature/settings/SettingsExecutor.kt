@@ -7,6 +7,7 @@ import de.fabianrump.crossnotes.ui.feature.settings.SettingsIntent.LoadTheme
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsIntent.ToggleTheme
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsLabel.NavigateToAboutCrossNotes
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsLabel.NavigateToHistory
+import de.fabianrump.crossnotes.ui.feature.settings.SettingsLabel.NavigateToLanguageRegion
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsLabel.NavigateToPrivacySecurity
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsLabel.ShowErrorSnackbar
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsResult.Error
@@ -30,7 +31,12 @@ internal class SettingsExecutor(
             is SettingsIntent.ToggleNotification -> toggleNotification(isEnabled = intent.isEnabled)
             SettingsIntent.NavigateToAboutCrossNotes -> navigateToAboutCrossNotes()
             SettingsIntent.NavigateToPrivacySecurity -> navigateToPrivacySecurity()
+            SettingsIntent.NavigateToLanguageRegion -> navigateToLanguageRegion()
         }
+    }
+
+    private fun navigateToLanguageRegion() {
+        publish(NavigateToLanguageRegion)
     }
 
     private fun navigateToPrivacySecurity() {

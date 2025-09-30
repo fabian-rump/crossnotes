@@ -8,7 +8,6 @@ import de.fabianrump.crossnotes.domain.models.Holiday
 import de.fabianrump.crossnotes.domain.models.Todo
 import de.fabianrump.crossnotes.domain.usecase.holidays.FetchHolidaysUseCase
 import de.fabianrump.crossnotes.domain.usecase.todo.AddTodoUseCase
-import de.fabianrump.crossnotes.ui.extensions.todayLocalDate
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoLabel.NavigateBack
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoLabel.ShowErrorSnackbar
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoResult.ChangeDueDate
@@ -21,6 +20,7 @@ import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.number
 
 internal class AddTodoExecutor(
     private val addTodoUseCase: AddTodoUseCase,
@@ -42,17 +42,15 @@ internal class AddTodoExecutor(
             is AddTodoIntent.ChangeText -> changeText(text = intent.text)
             AddTodoIntent.OpenDatePicker -> openDatePicker()
             AddTodoIntent.DismissDatePicker -> dismissDatePicker()
-            AddTodoIntent.FetchHolidays -> fetchHolidays()
         }
     }
 
-    private fun fetchHolidays() {
-        val today = todayLocalDate()
+    private fun fetchHolidays(date: LocalDate) {
         scope.launch {
             either<HolidayError, List<Holiday>> {
                 withError(transform = { HolidayError.GeneralError(it.message) }) {
                     with(receiver = fetchHolidaysUseCase) {
-                        invoke(year = 2025, month = 12, day = 24)
+                        invoke(year = date.year, month = date.month.number, day = date.day)
                     }
                 }
             }.fold(
@@ -87,6 +85,7 @@ internal class AddTodoExecutor(
 
     private fun changeDueDate(date: LocalDate) {
         dispatch(ChangeDueDate(date = date))
+        fetchHolidays(date = date)
     }
 
     private fun saveTodo(

@@ -45,7 +45,7 @@ import de.fabianrump.crossnotes.ui.theme.dimens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AboutCrossNotesScreen(
-    onNavigateBack: () -> Unit = {},
+    onNavigateBack: () -> Unit,
 ) {
     Scaffold(
         topBar = {

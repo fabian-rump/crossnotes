@@ -31,7 +31,8 @@ internal fun SettingsScreen(
     onNavigateBack: () -> Unit,
     onNavigateToHistory: () -> Unit,
     onNavigateToAboutCrossNotes: () -> Unit,
-    onNavigateToPrivacySecurity: () -> Unit
+    onNavigateToPrivacySecurity: () -> Unit,
+    onNavigateToLanguageRegion: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val store: SettingsStore = koinInject { parametersOf(scope) }
@@ -52,6 +53,7 @@ internal fun SettingsScreen(
                 NavigateToHistory -> onNavigateToHistory()
                 NavigateToAboutCrossNotes -> onNavigateToAboutCrossNotes()
                 NavigateToPrivacySecurity -> onNavigateToPrivacySecurity()
+                SettingsLabel.NavigateToLanguageRegion -> onNavigateToLanguageRegion()
             }
         }
     }

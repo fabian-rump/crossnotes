@@ -10,6 +10,7 @@ import de.fabianrump.crossnotes.ui.feature.home.HomeScreen
 import de.fabianrump.crossnotes.ui.feature.pasttodos.PastTodosScreen
 import de.fabianrump.crossnotes.ui.feature.settings.SettingsScreen
 import de.fabianrump.crossnotes.ui.feature.settings.subscreens.AboutCrossNotesScreen
+import de.fabianrump.crossnotes.ui.feature.settings.subscreens.LanguageRegionScreen
 import de.fabianrump.crossnotes.ui.feature.settings.subscreens.PrivacySecurityScreen
 import kotlinx.serialization.Serializable
 
@@ -60,6 +61,9 @@ fun CrossNotesNavigation() {
                 },
                 onNavigateToPrivacySecurity = {
                     navController.navigate(route = PrivacySecurity)
+                },
+                onNavigateToLanguageRegion = {
+                    navController.navigate(route = LanguageRegion)
                 }
             )
         }
@@ -70,6 +74,11 @@ fun CrossNotesNavigation() {
         }
         composable<PrivacySecurity> {
             PrivacySecurityScreen(
+                onNavigateBack = navController::popBackStack,
+            )
+        }
+        composable<LanguageRegion> {
+            LanguageRegionScreen(
                 onNavigateBack = navController::popBackStack,
             )
         }
@@ -96,3 +105,6 @@ private data object AboutCrossNotes
 
 @Serializable
 private data object PrivacySecurity
+
+@Serializable
+private data object LanguageRegion
