@@ -10,4 +10,5 @@ internal sealed interface AddTodoIntent {
     data class ChangePriority(val priority: Priority) : AddTodoIntent
     data class ChangeText(val text: String) : AddTodoIntent
     data class ChangeDueDate(val date: LocalDate) : AddTodoIntent
+    data object FetchHolidays : AddTodoIntent
 }

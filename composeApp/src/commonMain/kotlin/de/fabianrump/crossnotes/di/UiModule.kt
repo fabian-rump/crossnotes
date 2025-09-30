@@ -39,6 +39,7 @@ internal val uiModule = module {
     factory { (scope: CoroutineScope) ->
         AddTodoStore(
             addTodoUseCase = get(),
+            fetchHolidaysUseCase = get(),
             scope = scope,
         )
     }

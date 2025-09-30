@@ -1,5 +1,6 @@
 package de.fabianrump.crossnotes.di
 
+import de.fabianrump.crossnotes.domain.usecase.holidays.FetchHolidaysUseCase
 import de.fabianrump.crossnotes.domain.usecase.info.UsefulInfoUseCase
 import de.fabianrump.crossnotes.domain.usecase.theme.GetThemeUseCase
 import de.fabianrump.crossnotes.domain.usecase.theme.ToggleThemeUseCase
@@ -22,4 +23,5 @@ internal val domainUseCaseModule = module {
     singleOf(::UpdateDueDateUseCase)
     singleOf(::ToggleThemeUseCase)
     singleOf(::GetThemeUseCase)
+    singleOf(::FetchHolidaysUseCase)
 }

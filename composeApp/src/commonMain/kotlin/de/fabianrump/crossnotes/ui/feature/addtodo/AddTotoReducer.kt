@@ -10,5 +10,6 @@ internal object AddTotoReducer {
             is AddTodoResult.ChangeText -> state.copy(text = result.text)
             AddTodoResult.OpenDatePicker -> state.copy(isDatePickerShown = true)
             AddTodoResult.DismissDatePicker -> state.copy(isDatePickerShown = false)
+            is AddTodoResult.HolidaysFetched -> state.copy(holidayNames = result.holidays)
         }
 }

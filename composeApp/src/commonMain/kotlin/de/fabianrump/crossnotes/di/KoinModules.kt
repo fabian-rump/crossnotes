@@ -12,6 +12,7 @@ internal fun initKoin(appDeclaration: KoinAppDeclaration = {}) {
             domainRepositoryModule,
             domainUseCaseModule,
             commonModule,
+            networkModule,
             databaseModule()
         )
     }

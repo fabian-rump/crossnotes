@@ -18,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import de.fabianrump.crossnotes.ui.extensions.showErrorSnackbar
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoIntent.ChangeDueDate
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoIntent.DismissDatePicker
+import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoIntent.FetchHolidays
 import de.fabianrump.crossnotes.util.DatePickerDialog
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -32,6 +33,10 @@ internal fun AddNoteScreen(
     val store: AddTodoStore = koinInject { parametersOf(scope) }
     val state by store.state.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(key1 = Unit) {
+        store.onIntent(intent = FetchHolidays)
+    }
 
     LaunchedEffect(key1 = store) {
         store.labels.collect { label ->

@@ -17,3 +17,4 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
+/composeApp/src/commonMain/kotlin/de/fabianrump/crossnotes/data/remote/provider/ApiKeyProvider.kt

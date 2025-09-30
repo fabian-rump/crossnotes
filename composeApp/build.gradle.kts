@@ -31,6 +31,12 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.ktor.client.android)
+            implementation(libs.kotlinx.coroutines.android)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+            implementation(libs.kotlinx.coroutines.core)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -53,6 +59,12 @@ kotlin {
             implementation(libs.napier)
             implementation(libs.androidx.datastore)
             implementation(libs.androidx.datastore.preferences)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.contentNegotiation)
+            implementation(libs.ktor.serialization.json)
+            implementation(libs.ktor.logging)
+            implementation(libs.arrow.core)
+            implementation(libs.arrow.fx.coroutines)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

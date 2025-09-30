@@ -11,4 +11,5 @@ internal sealed interface AddTodoResult {
     data class ChangeText(val text: String) : AddTodoResult
     data object OpenDatePicker : AddTodoResult
     data object DismissDatePicker : AddTodoResult
+    data class HolidaysFetched(val holidays: List<String>) : AddTodoResult
 }

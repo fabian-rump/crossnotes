@@ -9,5 +9,6 @@ internal data class AddTodoState(
     val text: String = "",
     val dueDate: LocalDate? = null,
     val isDatePickerShown: Boolean = false,
-    val priority: Priority = Priority.LOW
+    val priority: Priority = Priority.LOW,
+    val holidayNames: List<String> = emptyList(),
 )

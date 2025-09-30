@@ -1,8 +1,14 @@
 package de.fabianrump.crossnotes.ui.feature.addtodo
 
+import arrow.core.raise.either
+import arrow.core.raise.withError
 import de.fabianrump.crossnotes.data.model.Priority
+import de.fabianrump.crossnotes.data.remote.model.HolidayError
+import de.fabianrump.crossnotes.domain.models.Holiday
 import de.fabianrump.crossnotes.domain.models.Todo
+import de.fabianrump.crossnotes.domain.usecase.holidays.FetchHolidaysUseCase
 import de.fabianrump.crossnotes.domain.usecase.todo.AddTodoUseCase
+import de.fabianrump.crossnotes.ui.extensions.todayLocalDate
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoLabel.NavigateBack
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoLabel.ShowErrorSnackbar
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoResult.ChangeDueDate
@@ -11,12 +17,14 @@ import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoResult.ChangeText
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoResult.DismissDatePicker
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoResult.Error
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoResult.OpenDatePicker
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
 internal class AddTodoExecutor(
     private val addTodoUseCase: AddTodoUseCase,
+    private val fetchHolidaysUseCase: FetchHolidaysUseCase,
     private val scope: CoroutineScope,
     private val dispatch: (AddTodoResult) -> Unit,
     private val publish: (AddTodoLabel) -> Unit
@@ -34,6 +42,30 @@ internal class AddTodoExecutor(
             is AddTodoIntent.ChangeText -> changeText(text = intent.text)
             AddTodoIntent.OpenDatePicker -> openDatePicker()
             AddTodoIntent.DismissDatePicker -> dismissDatePicker()
+            AddTodoIntent.FetchHolidays -> fetchHolidays()
+        }
+    }
+
+    private fun fetchHolidays() {
+        val today = todayLocalDate()
+        scope.launch {
+            either<HolidayError, List<Holiday>> {
+                withError(transform = { HolidayError.GeneralError(it.message) }) {
+                    with(receiver = fetchHolidaysUseCase) {
+                        invoke(year = 2025, month = 12, day = 24)
+                    }
+                }
+            }.fold(
+                ifLeft = {
+                    Napier.d { "fetchHolidays Error: $it" }
+                    dispatch(Error(message = it.message))
+                    publish(ShowErrorSnackbar(message = "Failed to load notes"))
+                },
+                ifRight = { holidays ->
+                    dispatch(AddTodoResult.HolidaysFetched(holidays = holidays.map { it.name }))
+                    Napier.d { "fetchHolidays: ${holidays.map { it.name }}" }
+                }
+            )
         }
     }
 

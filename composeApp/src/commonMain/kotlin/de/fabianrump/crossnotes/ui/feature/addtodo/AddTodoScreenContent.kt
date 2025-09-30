@@ -1,5 +1,6 @@
 package de.fabianrump.crossnotes.ui.feature.addtodo
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,10 +18,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Flag
+import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -58,6 +61,9 @@ internal fun AddNoteScreenContent(
             .background(color = MaterialTheme.colorScheme.background)
             .fillMaxSize()
     ) {
+        AnimatedVisibility(visible = state.holidayNames.isNotEmpty()) {
+            HolidayInfo(state = state)
+        }
         Text("What needs to be done?", style = MaterialTheme.typography.labelLarge)
         TodoText(
             state = state,
@@ -98,6 +104,43 @@ internal fun AddNoteScreenContent(
                 )
             },
         )
+    }
+}
+
+@Composable
+private fun HolidayInfo(state: AddTodoState) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(all = MaterialTheme.dimens.two),
+        elevation = CardDefaults.cardElevation(defaultElevation = MaterialTheme.dimens.defaultElevation),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiaryContainer)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier.padding(MaterialTheme.dimens.paddingLarge),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Lightbulb,
+                    contentDescription = "iconContentDescription",
+                    modifier = Modifier.size(size = MaterialTheme.dimens.three),
+                    tint = MaterialTheme.colorScheme.tertiaryContainer
+                )
+                Spacer(modifier = Modifier.width(width = MaterialTheme.dimens.paddingMedium))
+                Text(
+                    text = "We have some holidays at this due date:",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.tertiaryContainer
+                )
+            }
+            state.holidayNames.forEach {
+                ListItem(
+                    headlineContent = { Text(text = it, style = MaterialTheme.typography.labelLarge) }
+                )
+            }
+        }
     }
 }
 
