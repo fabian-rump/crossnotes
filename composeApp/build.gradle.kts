@@ -67,7 +67,16 @@ kotlin {
             implementation(libs.arrow.fx.coroutines)
         }
         commonTest.dependencies {
-            implementation(libs.kotlin.test)
+            implementation(libs.kotest.runner)
+            implementation(libs.kotest.assertions)
+            implementation(libs.kotest.property)
+            implementation(libs.kotest.framework.engine)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.kotlin.reflect)
+            implementation(libs.mockk)
+            implementation(libs.byte.buddy)
+            implementation(kotlin("test"))
+            implementation(libs.turbine)
         }
     }
 
@@ -111,8 +120,13 @@ dependencies {
     add("kspAndroid", libs.androidx.room.compiler)
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
     add("kspIosArm64", libs.androidx.room.compiler)
+    testImplementation(libs.junit.jupiter)
 }
 
 room {
     schemaDirectory("$projectDir/schemas")
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
