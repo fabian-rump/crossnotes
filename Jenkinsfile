@@ -2,18 +2,13 @@ pipeline {
     agent any
 
     environment {
-        JAVA_HOME = tool name: 'JDK 21', type: 'jdk'
-        PATH = "${JAVA_HOME}/bin:${env.PATH}"
-
-        GRADLE_OPTS = '-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.workers.max=4'
-
+        // System Java wird automatisch verwendet
+        GRADLE_OPTS = '-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.workers.max=4 -Dnet.bytebuddy.experimental=true'
     }
 
     options {
         timeout(time: 1, unit: 'HOURS')
-
         buildDiscarder(logRotator(numToKeepStr: '10'))
-
         timestamps()
     }
 
@@ -21,24 +16,11 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+                sh 'chmod +x gradlew'
 
                 script {
-                    sh 'git log -1 --oneline'
-                    sh 'git branch'
-                }
-            }
-        }
-
-        stage('Setup') {
-            steps {
-                script {
-                    echo "Java Version:"
+                    echo "Building branch: ${env.BRANCH_NAME}"
                     sh 'java -version'
-
-                    echo "Gradle Version:"
-                    sh './gradlew --version'
-
-                    sh 'chmod +x gradlew'
                 }
             }
         }
@@ -50,10 +32,10 @@ pipeline {
             }
         }
 
-        stage('Build Android') {
+        stage('Build Android Debug') {
             steps {
-                echo 'Building Android Debug and Release...'
-                sh './gradlew :composeApp:assembleDebug :composeApp:assembleRelease'
+                echo 'Building Android Debug...'
+                sh './gradlew :composeApp:assembleDebug'
             }
         }
 
@@ -78,45 +60,37 @@ pipeline {
             }
         }
 
-        stage('Build iOS Framework') {
+        stage('Build Android Release') {
             when {
-                expression {
-                    return System.getProperty('os.name').toLowerCase().contains('mac')
+                anyOf {
+                    branch 'main'
+                    branch 'master'
+                    branch 'develop'
                 }
             }
             steps {
-                echo 'Building iOS Framework...'
-                sh './gradlew :composeApp:linkDebugFrameworkIosSimulatorArm64'
-                sh './gradlew :composeApp:linkReleaseFrameworkIosArm64'
+                echo 'Building Android Release...'
+                sh './gradlew :composeApp:assembleRelease'
             }
         }
 
-        stage('Archive Artifacts') {
+        stage('Archive APKs') {
             steps {
                 echo 'Archiving build artifacts...'
-                archiveArtifacts artifacts: '**/build/outputs/**/*.apk', fingerprint: true, allowEmptyArchive: true
-                archiveArtifacts artifacts: '**/build/bin/**/*.framework/**', fingerprint: true, allowEmptyArchive: true
+                archiveArtifacts artifacts: '**/build/outputs/apk/**/*.apk',
+                                 fingerprint: true,
+                                 allowEmptyArchive: true
             }
         }
     }
 
     post {
         success {
-            echo 'Build successful! ✅'
+            echo 'Build successful!'
         }
 
         failure {
-            echo 'Build failed! ❌'
-        }
-
-        always {
-            cleanWs(
-                deleteDirs: true,
-                patterns: [
-                    [pattern: '**/build', type: 'INCLUDE'],
-                    [pattern: '**/.gradle', type: 'INCLUDE']
-                ]
-            )
+            echo 'Build failed!'
         }
     }
 }
