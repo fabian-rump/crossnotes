@@ -20,7 +20,7 @@ pipeline {
 
                 script {
                 sh '''
-                                echo "sdk.dir=$ANDROID_HOME" > local.properties
+                                echo "sdk.dir=$ANDROID_SDK" > local.properties
                                 java -version
                             '''
                     echo "Building branch: ${env.BRANCH_NAME}"
