@@ -93,12 +93,19 @@ android {
     namespace = "de.fabianrump.crossnotes"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "de.fabianrump.crossnotes"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+
+        val apiKey: String = project.findProperty("apiKey") as? String ?: ""
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
     }
     packaging {
         resources {

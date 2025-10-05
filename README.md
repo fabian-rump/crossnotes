@@ -68,7 +68,7 @@ flowchart TD
 <img src="screenshots/safety_security.png" alt="Home" width="250"/>
 <img src="screenshots/settings.png" alt="Home" width="250"/>
 
-## 🔧 Setup & Installation  
+## 🔧 Setup & Installation
 
 ### Voraussetzungen  
 - [Kotlin 2.x](https://kotlinlang.org)  
@@ -83,8 +83,13 @@ cd crossnotes
 
 # Android App starten
 ./gradlew :androidApp:installDebug
+Zudem muss eine .gradle.properties erstellt werden mit dem Inhalt
+apiKey="YOUR_HOLIDAY_API_KEY"
+von "holidays.abstractapi.com"
 
 # Desktop App starten
+Um die iOS App starten zu können muss unter Product -> Scheme -> Edit Scheme als Umgebungsvariable
+API_KEY=YOUR_HOLIDAY_API_KEY gesetzt werden.
 ./gradlew :desktopApp:run
 ```
 

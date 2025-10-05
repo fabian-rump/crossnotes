@@ -8,6 +8,7 @@ import de.fabianrump.crossnotes.data.remote.model.HolidayError.NetworkError
 import de.fabianrump.crossnotes.data.remote.dtos.HolidayDto
 import de.fabianrump.crossnotes.data.remote.model.HolidayError
 import de.fabianrump.crossnotes.data.remote.provider.HOLIDAY_API_KEY
+import de.fabianrump.crossnotes.data.remote.provider.SecretProvider
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -33,7 +34,7 @@ internal class HolidayApi : AutoCloseable {
             url {
                 protocol = URLProtocol.HTTPS
 
-                parameters.append(name = "api_key", value = HOLIDAY_API_KEY)
+                parameters.append(name = "api_key", value = SecretProvider.apiKey)
                 parameters.append(name = "country", value = "DE")
             }
         }
