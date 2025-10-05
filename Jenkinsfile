@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        // System Java wird automatisch verwendet
+        // Jenkins Credential ID: 'MY_API_KEY' → anpassen an deinen Namen
+        API_KEY = credentials('MY_API_KEY')
         GRADLE_OPTS = '-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.workers.max=4 -Dnet.bytebuddy.experimental=true'
     }
 
@@ -17,14 +18,12 @@ pipeline {
             steps {
                 checkout scm
                 sh 'chmod +x gradlew'
-
                 script {
-                sh '''
-                                echo "sdk.dir=$ANDROID_SDK" > local.properties
-                                java -version
-                            '''
+                    sh '''
+                        echo "sdk.dir=$ANDROID_SDK" > local.properties
+                        java -version
+                    '''
                     echo "Building branch: ${env.BRANCH_NAME}"
-                    sh 'java -version'
                 }
             }
         }
@@ -39,19 +38,18 @@ pipeline {
         stage('Build Android Debug') {
             steps {
                 echo 'Building Android Debug...'
-                sh './gradlew :composeApp:assembleDebug'
+                sh "./gradlew :composeApp:assembleDebug -PapiKey=${API_KEY}"
             }
         }
 
         stage('Test Android') {
             steps {
                 echo 'Running Android Unit Tests...'
-                sh './gradlew :composeApp:testDebugUnitTest'
+                sh "./gradlew :composeApp:testDebugUnitTest -PapiKey=${API_KEY}"
             }
             post {
                 always {
                     junit '**/build/test-results/testDebugUnitTest/*.xml'
-
                     publishHTML(target: [
                         allowMissing: false,
                         alwaysLinkToLastBuild: true,
@@ -74,7 +72,7 @@ pipeline {
             }
             steps {
                 echo 'Building Android Release...'
-                sh './gradlew :composeApp:assembleRelease'
+                sh "./gradlew :composeApp:assembleRelease -PapiKey=${API_KEY}"
             }
         }
 
