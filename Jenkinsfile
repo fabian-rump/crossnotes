@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Jenkins Credential ID: 'MY_API_KEY' → anpassen an deinen Namen
         API_KEY = credentials('MY_API_KEY')
-        GRADLE_OPTS = '-Xmx768m -Dorg.gradle.daemon=false -Dorg.gradle.parallel=false -Dorg.gradle.workers.max=1 -Dnet.bytebuddy.experimental=true'
+        GRADLE_OPTS = '-Xmx512m -Dorg.gradle.daemon=false -Dorg.gradle.parallel=false -Dorg.gradle.workers.max=1 -Dnet.bytebuddy.experimental=true'
         ANDROID_SDK = '/opt/android-sdk'
         ANDROID_HOME = '/opt/android-sdk'
     }
