@@ -2,6 +2,10 @@ package de.fabianrump.crossnotes.ui.feature.addtodo
 
 import arrow.core.raise.either
 import arrow.core.raise.withError
+import crossnotes.composeapp.generated.resources.Res
+import crossnotes.composeapp.generated.resources.add_todo_failed_to_load_holidays
+import crossnotes.composeapp.generated.resources.add_todo_failed_to_save_todo
+import crossnotes.composeapp.generated.resources.common_unknown_error
 import de.fabianrump.crossnotes.data.model.Priority
 import de.fabianrump.crossnotes.data.remote.model.HolidayError
 import de.fabianrump.crossnotes.domain.models.Holiday
@@ -21,6 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number
+import org.jetbrains.compose.resources.getString
 
 internal class AddTodoExecutor(
     private val addTodoUseCase: AddTodoUseCase,
@@ -57,7 +62,7 @@ internal class AddTodoExecutor(
                 ifLeft = {
                     Napier.d { "fetchHolidays Error: $it" }
                     dispatch(Error(message = it.message))
-                    publish(ShowErrorSnackbar(message = "Failed to load notes"))
+                    publish(ShowErrorSnackbar(message = getString(resource = Res.string.add_todo_failed_to_load_holidays)))
                 },
                 ifRight = { holidays ->
                     dispatch(AddTodoResult.HolidaysFetched(holidays = holidays.map { it.name }))
@@ -106,8 +111,8 @@ internal class AddTodoExecutor(
                 addTodoUseCase(todo = todo)
                 publish(NavigateBack)
             } catch (e: Exception) {
-                dispatch(Error(message = e.message ?: "Unknown error"))
-                publish(ShowErrorSnackbar(message = "Failed to load notes"))
+                dispatch(Error(message = e.message ?: getString(resource = Res.string.common_unknown_error)))
+                publish(ShowErrorSnackbar(message = getString(resource = Res.string.add_todo_failed_to_save_todo)))
             }
         }
     }

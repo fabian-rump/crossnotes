@@ -15,11 +15,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import crossnotes.composeapp.generated.resources.Res
+import crossnotes.composeapp.generated.resources.add_todo_top_bar_title
+import crossnotes.composeapp.generated.resources.common_back_navigation_content_description
 import de.fabianrump.crossnotes.ui.extensions.showErrorSnackbar
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoIntent.ChangeDueDate
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoIntent.DismissDatePicker
 import de.fabianrump.crossnotes.util.DatePickerDialog
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 
@@ -48,12 +52,12 @@ internal fun AddNoteScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Add Note") },
+                title = { Text(text = stringResource(resource = Res.string.add_todo_top_bar_title)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBackIosNew,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(resource = Res.string.common_back_navigation_content_description)
                         )
                     }
                 }

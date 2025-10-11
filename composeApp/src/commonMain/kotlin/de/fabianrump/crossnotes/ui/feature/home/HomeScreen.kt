@@ -16,10 +16,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import crossnotes.composeapp.generated.resources.Res
+import crossnotes.composeapp.generated.resources.home_todo_completed_snackbar_message
 import de.fabianrump.crossnotes.ui.extensions.showErrorSnackbar
 import de.fabianrump.crossnotes.ui.feature.home.HomeIntent.LoadInitialData
 import de.fabianrump.crossnotes.ui.feature.home.HomeIntent.UncheckTodo
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 
@@ -50,7 +53,7 @@ internal fun HomeScreen(
 
                 is HomeLabel.ShowUncheckTodoSnackbar -> scope.launch {
                     val result = snackbarHostState.showSnackbar(
-                        message = "Todo completed",
+                        message = getString(resource = Res.string.home_todo_completed_snackbar_message),
                         actionLabel = "Revert",
                         duration = SnackbarDuration.Long,
                         withDismissAction = true

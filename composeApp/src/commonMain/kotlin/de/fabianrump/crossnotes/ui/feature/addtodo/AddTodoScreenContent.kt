@@ -34,6 +34,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
+import crossnotes.composeapp.generated.resources.Res
+import crossnotes.composeapp.generated.resources.add_todo_add_create_todo_button
+import crossnotes.composeapp.generated.resources.add_todo_add_fab_button_content_description
+import crossnotes.composeapp.generated.resources.add_todo_due_date_date_calendar_content_description
+import crossnotes.composeapp.generated.resources.add_todo_due_date_date_format
+import crossnotes.composeapp.generated.resources.add_todo_due_date_section_title
+import crossnotes.composeapp.generated.resources.add_todo_holidays_section_icon_content_description
+import crossnotes.composeapp.generated.resources.add_todo_holidays_section_title
+import crossnotes.composeapp.generated.resources.add_todo_priority_container_title_high
+import crossnotes.composeapp.generated.resources.add_todo_priority_container_title_low
+import crossnotes.composeapp.generated.resources.add_todo_priority_container_title_medium
+import crossnotes.composeapp.generated.resources.add_todo_priority_section_title
+import crossnotes.composeapp.generated.resources.add_todo_section_title
+import crossnotes.composeapp.generated.resources.add_todo_todo_text_hint
 import de.fabianrump.crossnotes.data.model.Priority
 import de.fabianrump.crossnotes.data.model.Priority.HIGH
 import de.fabianrump.crossnotes.data.model.Priority.LOW
@@ -46,6 +60,7 @@ import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoIntent.OpenDatePicker
 import de.fabianrump.crossnotes.ui.feature.addtodo.AddTodoIntent.SaveTodo
 import de.fabianrump.crossnotes.ui.theme.dimens
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -64,14 +79,14 @@ internal fun AddNoteScreenContent(
         AnimatedVisibility(visible = state.holidayNames.isNotEmpty()) {
             HolidayInfo(state = state)
         }
-        Text("What needs to be done?", style = MaterialTheme.typography.labelLarge)
+        Text(text = stringResource(resource = Res.string.add_todo_section_title), style = MaterialTheme.typography.labelLarge)
         TodoText(
             state = state,
             onTextChange = { onIntent(ChangeText(text = it)) }
         )
-        Text("Priority Level", style = MaterialTheme.typography.labelLarge)
+        Text(text = stringResource(resource = Res.string.add_todo_priority_section_title), style = MaterialTheme.typography.labelLarge)
         PriorityRow(priority = state.priority, onPriorityChange = { onIntent(ChangePriority(priority = it)) })
-        Text("Due Date", style = MaterialTheme.typography.labelLarge)
+        Text(text = stringResource(resource = Res.string.add_todo_due_date_section_title), style = MaterialTheme.typography.labelLarge)
         DueDate(onDueDateClick = { onIntent(OpenDatePicker) }, dueDate = state.dueDate)
         Button(
             modifier = Modifier
@@ -94,11 +109,11 @@ internal fun AddNoteScreenContent(
                     content = {
                         Icon(
                             imageVector = Icons.Default.Add,
-                            contentDescription = "add"
+                            contentDescription = stringResource(resource = Res.string.add_todo_add_fab_button_content_description)
                         )
                         Spacer(modifier = Modifier.width(width = MaterialTheme.dimens.one))
                         Text(
-                            text = "Create Todo", style = MaterialTheme.typography.labelLarge
+                            text = stringResource(resource = Res.string.add_todo_add_create_todo_button), style = MaterialTheme.typography.labelLarge
                         )
                     }
                 )
@@ -118,19 +133,19 @@ private fun HolidayInfo(state: AddTodoState) {
     ) {
         Column {
             Row(
-                modifier = Modifier.padding(MaterialTheme.dimens.paddingLarge),
+                modifier = Modifier.padding(all = MaterialTheme.dimens.paddingLarge),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
                 Icon(
                     imageVector = Icons.Default.Lightbulb,
-                    contentDescription = "iconContentDescription",
+                    contentDescription = stringResource(resource = Res.string.add_todo_holidays_section_icon_content_description),
                     modifier = Modifier.size(size = MaterialTheme.dimens.three),
                     tint = MaterialTheme.colorScheme.tertiaryContainer
                 )
                 Spacer(modifier = Modifier.width(width = MaterialTheme.dimens.paddingMedium))
                 Text(
-                    text = "We have some holidays at this due date:",
+                    text = stringResource(resource = Res.string.add_todo_holidays_section_title),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.tertiaryContainer
                 )
@@ -160,10 +175,10 @@ private fun DueDate(onDueDateClick: () -> Unit, dueDate: LocalDate?) {
                 .padding(all = MaterialTheme.dimens.two),
             horizontalArrangement = Arrangement.SpaceBetween,
             content = {
-                Text(text = dueDate?.toFormattedString() ?: "DD.MM.YYYY")
+                Text(text = dueDate?.toFormattedString() ?: stringResource(resource = Res.string.add_todo_due_date_date_format))
                 Icon(
                     imageVector = Icons.Default.CalendarMonth,
-                    contentDescription = "Calendar",
+                    contentDescription = stringResource(resource = Res.string.add_todo_due_date_date_calendar_content_description),
                     modifier = Modifier.size(size = MaterialTheme.dimens.four),
                     tint = MaterialTheme.colorScheme.primary,
                 )
@@ -184,35 +199,35 @@ private fun PriorityRow(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         PriorityCard(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(weight = 1f),
             icon = Icons.Filled.Flag,
-            iconContentDescription = "Low",
-            text = "Low",
-            iconColor = Color(0xFF059669),
+            iconContentDescription = stringResource(resource = Res.string.add_todo_priority_container_title_low),
+            text = stringResource(resource = Res.string.add_todo_priority_container_title_low),
+            iconColor = Color(color = 0xFF059669),
             isSelected = priority == LOW,
             onClick = {
                 onPriorityChange(LOW)
             }
         )
-        Spacer(modifier = Modifier.width(MaterialTheme.dimens.one))
+        Spacer(modifier = Modifier.width(width = MaterialTheme.dimens.one))
         PriorityCard(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(weight = 1f),
             icon = Icons.Filled.Flag,
-            iconContentDescription = "Medium",
-            text = "Medium",
-            iconColor = Color(0xFFD97706),
+            iconContentDescription = stringResource(resource = Res.string.add_todo_priority_container_title_medium),
+            text = stringResource(resource = Res.string.add_todo_priority_container_title_medium),
+            iconColor = Color(color = 0xFFD97706),
             isSelected = priority == MEDIUM,
             onClick = {
                 onPriorityChange(MEDIUM)
             }
         )
-        Spacer(modifier = Modifier.width(MaterialTheme.dimens.one))
+        Spacer(modifier = Modifier.width(width = MaterialTheme.dimens.one))
         PriorityCard(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(weight = 1f),
             icon = Icons.Filled.Flag,
-            iconContentDescription = "High",
-            text = "High",
-            iconColor = Color(0xFFDC2626),
+            iconContentDescription = stringResource(resource = Res.string.add_todo_priority_container_title_high),
+            text = stringResource(resource = Res.string.add_todo_priority_container_title_high),
+            iconColor = Color(color = 0xFFDC2626),
             isSelected = priority == HIGH,
             onClick = {
                 onPriorityChange(HIGH)
@@ -233,7 +248,7 @@ private fun PriorityCard(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(MaterialTheme.dimens.oneAndHalf),
+        shape = RoundedCornerShape(size = MaterialTheme.dimens.oneAndHalf),
         elevation = CardDefaults.cardElevation(defaultElevation = MaterialTheme.dimens.paddingSmall),
         colors = CardDefaults.cardColors(containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant),
         onClick = onClick
@@ -250,7 +265,7 @@ private fun PriorityCard(
                 modifier = Modifier.size(size = MaterialTheme.dimens.four),
                 tint = iconColor,
             )
-            Spacer(modifier = Modifier.height(MaterialTheme.dimens.one))
+            Spacer(modifier = Modifier.height(height = MaterialTheme.dimens.one))
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = text,
@@ -274,10 +289,10 @@ private fun TodoText(state: AddTodoState, onTextChange: (String) -> Unit) {
         TextField(
             value = state.text,
             onValueChange = onTextChange,
-            label = { Text(text = "Enter your todo...") },
+            label = { Text(text = stringResource(resource = Res.string.add_todo_todo_text_hint)) },
             minLines = 3,
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(MaterialTheme.dimens.oneAndHalf),
+            shape = RoundedCornerShape(size = MaterialTheme.dimens.oneAndHalf),
             colors = OutlinedTextFieldDefaults.colors().copy(
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,

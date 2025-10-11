@@ -1,0 +1,26 @@
+<resources>
+    <!--common-->
+    <string name="common_unknown_error">Unknown Error</string>
+    <string name="common_back_navigation_content_description">Back</string>
+
+    <!--add todo-->
+    <string name="add_todo_top_bar_title">Add Todo</string>
+    <string name="add_todo_failed_to_load_holidays">Failed to load holidays</string>
+    <string name="add_todo_failed_to_save_todo">Failed to save Todo</string>
+    <string name="add_todo_section_title">What needs to be done?</string>
+    <string name="add_todo_priority_section_title">Priority Level</string>
+    <string name="add_todo_due_date_section_title">Due Date</string>
+    <string name="add_todo_add_fab_button_content_description">Due Date</string>
+    <string name="add_todo_add_create_todo_button">Create Todo</string>
+    <string name="add_todo_holidays_section_icon_content_description">Info</string>
+    <string name="add_todo_holidays_section_title">We have some holidays at this due date:</string>
+    <string name="add_todo_due_date_date_format">DD.MM.YYYY</string>
+    <string name="add_todo_due_date_date_calendar_content_description">Calendar</string>
+    <string name="add_todo_priority_container_title_low">Low</string>
+    <string name="add_todo_priority_container_title_medium">Medium</string>
+    <string name="add_todo_priority_container_title_high">High</string>
+    <string name="add_todo_todo_text_hint">Enter your todo...</string>
+
+    <!--home-->
+    <string name="home_todo_completed_snackbar_message">Todo completed</string>
+</resources>

@@ -1,0 +1,4 @@
+<resources>
+    <!--home-->
+    <string name="home_todo_completed_snackbar_message">Todo abgeschlossen</string>
+</resources>
